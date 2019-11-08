@@ -63,8 +63,6 @@ rule SAMTOOLS_Index:
 		"CallVars_Output/NoDupReads/{sample}.bam"
 	output:
 		"CallVars_Output/NoDupReads/{sample}.bam.bai"
-	#conda:
-	#	"config/Config_BWA-Samtools-Cutadapt.yml"
 	shell:
 		"samtools index {input} -@ 6"
 
