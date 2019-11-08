@@ -1,4 +1,4 @@
-This folder contains below human reference genome files.
+This folder should contains below human reference genome files.
 
 genome.dict
 genome.fa
