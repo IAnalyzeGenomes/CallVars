@@ -16,31 +16,20 @@ Snakemake NGS analysis workflow:
 
 Working directory structure for running NGS analysis:
 
--Paired-end reads (ending in _R1.fastq and _R1.fastq, say A_R1.fastq and A_R2.fastq) in ‘FastQ’ directory
+1) Paired-end reads (ending in _R1.fastq and _R1.fastq, say A_R1.fastq and A_R2.fastq) in ‘FastQ’ directory
+2) CallVars.yml
+3) Snakefile
+4) 1000G_phase1.indels.hg19.sites.vcf
+5) 1000G_phase1.indels.hg19.sites.vcf.idx
+6) dbSNP_20180423.vcf
+7) dbSNP_20180423.vcf.idx
+8) GNOMAD_hg19.vcf
+9) GNOMAD_hg19.vcf.idx
+10) Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
+11) Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx
+12) Reference Genome Directory ‘UCSCWholeGenomeFasta’ containing below files
 
--CallVars.yml
-
--Snakefile
-
--1000G_phase1.indels.hg19.sites.vcf
-
-- 1000G_phase1.indels.hg19.sites.vcf.idx
-
-- dbSNP_20180423.vcf
-
-- dbSNP_20180423.vcf.idx
-
-- GNOMAD_hg19.vcf
-
-- GNOMAD_hg19.vcf.idx
-
-- Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
-
-- Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx
-
-- Reference Genome Directory ‘UCSCWholeGenomeFasta’ containing below files
-
-  •genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
+  	•genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
 
 Steps (on the Linux command line interface) for running NGS analysis.
 
@@ -69,9 +58,9 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 	conda activate CallVars
 
 6)	Running snakemake: 
-	Ensure you run the below command in working directory.
+		Ensure you run the below command in working directory.
 
-	snakemake CallVars_Output/VCF/{your_sample_name}_germline.vcf CallVars_Output/VCF/{your_sample_name}_somatic.vcf --cores N
+		snakemake CallVars_Output/VCF/{your_sample_name}_germline.vcf CallVars_Output/VCF/{your_sample_name}_somatic.vcf --cores N
 
 Where CallVars_Output/VCF/A_germline.vcf is the germline variant file, CallVars_Output/VCF/A_somatic.vcf is the somatic variant file and N is number of cores.
 
