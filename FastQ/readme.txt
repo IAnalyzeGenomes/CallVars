@@ -1,1 +1,2 @@
-Place your FastQ files that ends in "_R1.fastq.gz" & "_R2.fastq.gz" or "_R1.fastq" & "_R2.fastq" in this folder. 
+This folder should contain your FastQ files ending in "_R1.fastq.gz" & "_R2.fastq.gz". 
+Pipeline also works with gzipped FastQ files ending "_R1.fastq.gz" & "_R2.fastq.gz".
