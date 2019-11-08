@@ -29,7 +29,7 @@ All the below listed files and directories need to be present in the working dir
 - Reference Genome Directory ‘UCSCWholeGenomeFasta’ containing files
   	genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
 
-# Steps using linux commad line interface for running NGS analysis using snakemake
+# Running the snakemake pipleine: 
 
 1)	Check the working directory and FastQ files: 
 
