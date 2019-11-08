@@ -30,26 +30,36 @@ Working directory structure for running NGS analysis:
   •genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
 
 Steps (on the Linux command line interface) for running NGS analysis.
+
 1)	Check working directory and FastQ files: 
 Make sure you are in the working directory that contains all the needed files and folders for running snakemake.
+
 Make sure your Fastq files are in ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R1.fastq’, say A_R1.fastq and A_R2.fastq. 
+
 2)	Install miniconda: 
 Use below link to install miniconda.
 https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
+
 3)	Install snakemake:
+
 conda install -c bioconda -c conda-forge snakemake
 
 4)	Create environment CallVars:
+
 conda env create –n CallVars –f CallVars.yml
 
 	This downloads all the necessary tools (Cutadapt, BWA, GATK and samtools) and depending packages for NGS analysis to run.
 
 5)	Activate CallVars environment:
+
 conda activate CallVars
 
 6)	Running snakemake: 
 Ensure you run the below command in working directory.
-snakemake CallVars_Output/VCF/{your_sample_name}_germline.vcf       CallVars_Output/VCF/{your_sample_name}_somatic.vcf --cores N
+
+snakemake CallVars_Output/VCF/{your_sample_name}_germline.vcf CallVars_Output/VCF/{your_sample_name}_somatic.vcf --cores N
+
 Where CallVars_Output/VCF/A_germline.vcf is the germline variant file, CallVars_Output/VCF/A_somatic.vcf is the somatic variant file and N is number of cores.
+
 For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and number of cores available are 6 then run below command.
 snakemake CallVars_Output/VCF/A_germline.vcf CallVars_Output/VCF/A_somatic.vcf --cores 6
