@@ -1,6 +1,6 @@
 # Conda environment for GATK Python Tools
 #
-name: gatk
+#name: gatk
 channels:
 - defaults
 - conda-forge
