@@ -47,15 +47,15 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 3)	Install snakemake:
 	
-	conda install -c bioconda -c conda-forge snakemake
+		conda install -c bioconda -c conda-forge snakemake
 
 4)	Create environment CallVars:
 	
-	conda env create –n CallVars –f CallVars.yml
+		conda env create –n CallVars –f CallVars.yml
 
 5)	Activate CallVars environment:
 
-	conda activate CallVars
+		conda activate CallVars
 
 6)	Running snakemake: 
 		Ensure you run the below command in working directory.
