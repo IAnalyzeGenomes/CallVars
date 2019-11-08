@@ -16,7 +16,7 @@ Snakemake NGS analysis workflow:
 
 Working directory structure for running NGS analysis:
 
-1) Paired-end reads (ending in _R1.fastq and _R1.fastq, say A_R1.fastq and A_R2.fastq) in ‘FastQ’ directory
+1) Paired-end reads (ending in _R1.fastq and _R2.fastq, say A_R1.fastq and A_R2.fastq) in ‘FastQ’ directory
 2) CallVars.yml
 3) Snakefile
 4) 1000G_phase1.indels.hg19.sites.vcf
@@ -36,7 +36,7 @@ Steps on the Linux command line interface for running NGS analysis.
 1)	Check the working directory and FastQ files: 
 
 Make sure you are in the working directory that contains all the needed files and folders for running snakemake.
-Make sure your Fastq files are in ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R1.fastq’, say A_R1.fastq and A_R2.fastq. 
+Make sure your Fastq files are in ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. 
 
 2)	Install miniconda: 
 
