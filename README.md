@@ -15,20 +15,21 @@ This is a snakemake pipeline for doing preliminary NGS analysis for converting r
 8) Somatic variant detection using GATK Mutect2
 
 # Working directory for running NGS analysis:
-1) Paired-end reads (ending in _R1.fastq and _R2.fastq, say A_R1.fastq and A_R2.fastq) in ‘FastQ’ directory
-2) CallVars.yml
-3) Snakefile
-4) 1000G_phase1.indels.hg19.sites.vcf
-5) 1000G_phase1.indels.hg19.sites.vcf.idx
-6) dbSNP_20180423.vcf
-7) dbSNP_20180423.vcf.idx
-8) GNOMAD_hg19.vcf
-9) GNOMAD_hg19.vcf.idx
-10) Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
-11) Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx
-12) Reference Genome Directory ‘UCSCWholeGenomeFasta’ containing below files
+All the below listed files and directories need to be present in the working directory before you can run the NGS analysis.
 
-  	-genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
+- Paired-end reads (ending in _R1.fastq and _R2.fastq, say A_R1.fastq and A_R2.fastq) in ‘FastQ’ directory
+- CallVars.yml
+- Snakefile
+- 1000G_phase1.indels.hg19.sites.vcf
+- 1000G_phase1.indels.hg19.sites.vcf.idx
+- dbSNP_20180423.vcf
+- dbSNP_20180423.vcf.idx
+- GNOMAD_hg19.vcf
+- GNOMAD_hg19.vcf.idx
+- Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
+- Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx
+- Reference Genome Directory ‘UCSCWholeGenomeFasta’ containing files
+  	genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
 
 # Steps on the Linux command line interface for running NGS analysis using snakemake.
 
