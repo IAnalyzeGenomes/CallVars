@@ -2,7 +2,7 @@
 A snakemake variant calling pipeline for a single sample Illumina short paired-end reads
 
 
-This is a snakemake pipeline for doing preliminary NGS analysis of converting raw Illumina short paired-end reads to a list of somatic and/or germline variants. 
+This is a snakemake pipeline for doing preliminary NGS analysis for converting raw Illumina short paired-end reads to a list of somatic and/or germline variants. 
 
 Snakemake NGS analysis workflow:
 1) Pre-processing using Cutadapt
@@ -31,7 +31,7 @@ Working directory structure for running NGS analysis:
 
   	•genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
 
-Steps (on the Linux command line interface) for running NGS analysis.
+Steps on the Linux command line interface for running NGS analysis.
 
 1)	Check the working directory and FastQ files: 
 
