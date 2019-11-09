@@ -1,6 +1,6 @@
 # CallVars: 
 
-This is a snakemake pipeline for doing preliminary Next-Gen Sequencing (NGS) analysis using short paired-end Illumina reads (fastq files). See below for the pipeline workflow.
+This is a snakemake pipeline for doing preliminary Next-Gen Sequencing (NGS) analysis (pre-processing, mapping and variant calling) using short paired-end Illumina reads (fastq files). See below for the pipeline workflow.
 
 # Snakemake pipleine workflow:
 1) Pre-processing using Cutadapt
@@ -32,7 +32,7 @@ You will need to download each of the below listed files from their respective o
 	- Reference Genome Directory ‘UCSCWholeGenomeFasta’ containing files
   	genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
 
-# Running Snakemake using Linux: 
+# Running snakemake using Linux: 
 1)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
@@ -67,4 +67,4 @@ For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and 
 
 Where CallVars_Output/VCF/A_germline.vcf is the germline variant file, CallVars_Output/VCF/A_somatic.vcf is the somatic variant file and N is number of cores.
 
- This pipeline has been tested using 64-bit linux OS. I plan to make further updates by integrating more tools. Feel free to reach me at amitbinf[at]med.umich.edu or amit4biotek[at]gmail.com with any questions.
+ This pipeline has been tested using 64-bit linux OS. I plan to continue refining this workflow for detecting clinically relevant variants in targeted gene panels for human data. Feel free to reach me at amitbinf[at]med.umich.edu or amit4biotek[at]gmail.com with any questions.
