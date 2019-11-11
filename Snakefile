@@ -98,6 +98,8 @@ rule GATK_HaplotypeCaller:
 	input:
 		BAM="CallVars_Output/BQSR/{sample}.bam",
 		REF="UCSCWholeGenomeFasta/genome.fa",
+		SNP="dbSNP_20180423.vcf",
+		#MICANC="MICANC.bed"
 	output:
 		"CallVars_Output/VCF/{sample}_germline.vcf"
 	log:
@@ -105,14 +107,14 @@ rule GATK_HaplotypeCaller:
 	params:
 		 mem="-Xmx30g -Xmx20g"
 	shell:
-		"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} -O {output} &>{log}"
-
+		"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -O {output} &>{log}"
+		#"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -L {input.MICANC} -O {output} &>{log}"
 rule GATK_Mutect2:
 	input:
 		BAM="CallVars_Output/BQSR/{sample}.bam",
 		REF="UCSCWholeGenomeFasta/genome.fa",
 		GNOMAD="GNOMAD_hg19.vcf",
-		MICANC="MICANC.bed"
+		#MICANC="MICANC.bed"
 	output:
 		"CallVars_Output/VCF/{sample}_somatic.vcf"
 	log:
@@ -120,7 +122,8 @@ rule GATK_Mutect2:
 	params:
 		 mem="-Xmx30g -Xmx20g"
 	run:
-		shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")	
+		shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")
+		#shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -L {input.MICANC} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")
 		shell("rm -r CallVars_Output/TrimmedReads/ CallVars_Output/MappedReads/ CallVars_Output/SortedReads/ CallVars_Output/NoDupReads/")
 		
 
