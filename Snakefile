@@ -8,8 +8,8 @@ rule CUTADAPT_Trim1:
 	log:
 		"CallVars_Output/Logs/{sample}_CUTADAPT-Trimming.log"
 	shell:
-		"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j 6 &>{log}"
-		#"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}"
+		#"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j 6 &>{log}"
+		"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}"
 
 rule CUTADAPT_Trim2:
 	input:
@@ -21,8 +21,8 @@ rule CUTADAPT_Trim2:
 	log:
 		"CallVars_Output/Logs/{sample}_CUTADAPT-Trimming.log"
 	shell:
-		"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j 6 &>{log}"
-		#"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}"
+		#"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j 6 &>{log}"
+		"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}"
 
 rule BWA_Mapping:
 	input:
@@ -36,8 +36,8 @@ rule BWA_Mapping:
 	log:
 		"CallVars_Output/Logs/{sample}_BWA-Mapping.log"
 	shell:
-		"bwa mem -R '{params.rg}' -t 6  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} -@ 6 2>{log}"
-		#"bwa mem -R '{params.rg}' -t 6  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} 2>{log}"
+		#"bwa mem -R '{params.rg}' -t 6  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} -@ 6 2>{log}"
+		"bwa mem -R '{params.rg}' -t 6  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} 2>{log}"
 
 rule SAMTOOLS_Sort:
 	input:
@@ -47,10 +47,10 @@ rule SAMTOOLS_Sort:
 	log:
 		"CallVars_Output/Logs/{sample}_SAMTOOLS-sort.log"
 	shell:
-		"samtools sort -T CallVars_Output/SortedReads/{wildcards.sample} "
-		"-O bam {input} > {output} -@ 6 2>{log}"
 		#"samtools sort -T CallVars_Output/SortedReads/{wildcards.sample} "
-		#"-O bam {input} > {output} 2>{log}"
+		#"-O bam {input} > {output} -@ 6 2>{log}"
+		"samtools sort -T CallVars_Output/SortedReads/{wildcards.sample} "
+		"-O bam {input} > {output} 2>{log}"
 rule GATK_MarkDuplicates:
 	input:
 		"CallVars_Output/SortedReads/{sample}.bam"
@@ -70,8 +70,8 @@ rule SAMTOOLS_Index:
 	#conda:
 	#	"config/Config_BWA-Samtools-Cutadapt.yml"
 	shell:
-		"samtools index {input} -@ 6"
-		#"samtools index {input}"
+		#"samtools index {input} -@ 6"
+		"samtools index {input}"
 
 rule GATK_BaseRecalibrator:
 	input:
@@ -114,8 +114,8 @@ rule GATK_HaplotypeCaller:
 	params:
 		 mem="-Xmx30g -Xmx20g"
 	shell:
-		#"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -O {output} &>{log}"
-		"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -L {input.MICANC} -O {output} &>{log}"
+		"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -O {output} &>{log}"
+		#"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -L {input.MICANC} -O {output} &>{log}"
 		
 rule GATK_Mutect2:
 	input:
@@ -130,8 +130,8 @@ rule GATK_Mutect2:
 	params:
 		 mem="-Xmx30g -Xmx20g"
 	run:
-		#shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")
-		shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -L {input.MICANC} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")	
+		shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")
+		#shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -L {input.MICANC} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")	
 		shell("rm -r CallVars_Output/TrimmedReads/ CallVars_Output/MappedReads/ CallVars_Output/SortedReads/ CallVars_Output/NoDupReads/")
 		
 rule GATK_Funcotator_Germline:
