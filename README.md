@@ -1,8 +1,10 @@
 # CallVars: 
 
-This is a snakemake pipeline for doing preliminary Next-Gen Sequencing (NGS) analysis (pre-processing, mapping and variant calling) using short paired-end Illumina reads (fastq files). See below for the pipeline workflow.
+CallVars is a Snakemake workflow that currently performs preliminary Next-Gen Sequencing (NGS) analysis i.e pre-processing, mapping and variant calling using Illumina paired-end reads (fastq files). The end goal of the workflow is to report a list of clinically relevant variants in targeted gene panels for human data which can be reveiewed by clinicians for disease diagnosis and/or selecting possible treatment options for the patient. 
 
-# Snakemake pipleine workflow:
+The workflow uses hg19 version of human reference genome for analysis and it has been tested using 64-bit linux OS.
+
+# Steps in Snakemake workflow:
 1) Pre-processing using Cutadapt
 2) Mapping using BWA
 3) Sorting using samtools
@@ -19,7 +21,7 @@ All the below listed files need to be present in the working directory before yo
 	- CallVars.yml
 	- Snakefile
 
-You will need to download each of the below listed files from their respective online public repositories. However, if you are not able to find any of the below listed files, feel free to reach me at amitbinf[at]med.umich.edu or amit4biotek[at]gmail.com.
+Note that the workflow currently uses hg19 version of human reference genome. You will need to download each of the below listed files from their respective online public repositories. However, if you are not able to find any of the below listed files, feel free to reach me at amitbinf[at]med.umich.edu or amit4biotek[at]gmail.com.
 
 	- 1000G_phase1.indels.hg19.sites.vcf
 	- 1000G_phase1.indels.hg19.sites.vcf.idx
@@ -32,7 +34,7 @@ You will need to download each of the below listed files from their respective o
 	- Reference Genome Directory ‘UCSCWholeGenomeFasta’ containing files
   	genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
 
-# Running snakemake using Linux: 
+# Running Snakemake workflow on Linux terminal: 
 1)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
@@ -67,4 +69,4 @@ For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and 
 
 Where CallVars_Output/VCF/A_germline.vcf is the germline variant file, CallVars_Output/VCF/A_somatic.vcf is the somatic variant file and N is number of cores.
 
- This pipeline has been tested using 64-bit linux OS. I plan to continue refining this workflow for detecting clinically relevant variants in targeted gene panels for human data. Feel free to reach me at amitbinf[at]med.umich.edu or amit4biotek[at]gmail.com with any questions.
+ I plan to continue refining this workflow for detecting clinically relevant variants in targeted gene panels for human data. Feel free to reach me at amitbinf[at]med.umich.edu or amit4biotek[at]gmail.com with any questions.
