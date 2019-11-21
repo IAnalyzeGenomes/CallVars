@@ -66,11 +66,11 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 6)	Running snakemake: 
 		Ensure you run the below command in working directory.
 
-		snakemake CallVars_Output/VCF/{your_sample_name}_germline.vcf CallVars_Output/VCF/{your_sample_name}_somatic_func.vcf --cores N
+		snakemake CallVars_Output/VCF/{your_sample_name}_germline_func.vcf CallVars_Output/VCF/{your_sample_name}_somatic_func.vcf --cores N
 
 For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and number of cores available are 6 then run below command.
 
-		snakemake CallVars_Output/VCF/A_germline.vcf CallVars_Output/VCF/A_somatic_func.vcf --cores 6
+		snakemake CallVars_Output/VCF/A_germline_func.vcf CallVars_Output/VCF/A_somatic_func.vcf --cores 6
 
 Where CallVars_Output/VCF/A_germline.vcf is the germline variant file, CallVars_Output/VCF/A_somatic.vcf is the somatic variant file and N is number of cores.
 
