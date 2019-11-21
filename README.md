@@ -2,7 +2,7 @@
 
 CallVars is an automated reproducible Snakemake workflow that takes you from Illumina paired-end reads (FastQ files) to functionally annotated variants (VCF files) for human whole exome sequencing or targeted sequencing data. This workflow largely follows Broad Institute's "Best Practices" guidlines for germline short variant discovery (SNPs + Indels) in single sample and can also detect somatic variants. 
 
-This workflow has been tested using 64-bit linux OS. Note that it uses hg19 version of human reference genome for analysis of Illumina paired-end reads. Below listed steps are performed by the workflow sequencially. 
+This workflow has been tested using 64-bit linux OS. Note that it uses hg19 version of human reference genome for analysis of Illumina paired-end reads. Below listed analysis steps are performed by the workflow sequentially. 
 
 # Steps in Snakemake workflow:
 1) Pre-processing using Cutadapt
@@ -13,7 +13,7 @@ This workflow has been tested using 64-bit linux OS. Note that it uses hg19 vers
 6) Base quality score recalibration using GATK BaseRecalibrator and ApplyBQSR
 7) Germline variant detection using GATK HaplotypeCaller
 8) Somatic variant detection using GATK Mutect2
-9) Functional annotation for gerline variants using GATK Funcotator
+9) Functional annotation for germline variants using GATK Funcotator
 10) Functional annotation for somatic variants using GATK Funcotator
 
 # Setting up working directory to run Snakemake:
