@@ -166,25 +166,47 @@ rule GATK_VariantFiltration_Germline:
 		REF="UCSCWholeGenomeFasta/genome.fa",
 		VCF="CallVars_Output/VCF/{sample}_germline_func.vcf"
 	output:
-		"CallVars_Output/VCF/{sample}_germline_func_filter.vcf"
+		FILTER="CallVars_Output/VCF/{sample}_germline_func_filter.vcf",
+		ONE="CallVars_Output/TEMPFILES/{sample}_CallVars_Germline_TempOne.txt",
+		TWO="CallVars_Output/TEMPFILES/{sample}_CallVars_Germline_TempTwo.txt",
+		THREE="CallVars_Output/TEMPFILES/{sample}_CallVars_Germline_TempThree.txt",
+		FINALTEMP="CallVars_Output/TEMPFILES/{sample}_CallVars_Germline_FinalTemp.txt",
+		FINAL="CallVars_Output/Results/{sample}_CallVars_Germline.txt"
 	log:
 		"CallVars_Output/Logs/{sample}_GATK-VariantFiltration_Germline.log"
 	params:
 		 mem="-Xmx30g -Xmx20g"
 	shell:
-		"gatk VariantFiltration -R {input.REF} -O {output} -V {input.VCF} --filter-expression \"(QD < 2.0) || (FS > 60.0) || (MQ < 40.0) || (MQRankSum < -12.5) || (ReadPosRankSum < -8.0) || (SOR > 3.0)\" --filter-name \"Fail\""
-
+		"""
+		gatk VariantFiltration -R {input.REF} -O {output.FILTER} -V {input.VCF} --filter-expression \"(QD < 2.0) || (FS > 60.0) || (MQ < 40.0) || (MQRankSum < -12.5) || (ReadPosRankSum < -8.0) || (SOR > 3.0)\" --filter-name \"Fail\"
+		cat {output.FILTER}| cut -f1-7 | tail -n +60 > {output.ONE} || true
+		cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION\=\["  '{{ print $2 }}'  | awk -F"|" '{{ print $1"\t"$6"\t"$14"\t"$17"\t"$19"\t"$27"\t"$28*100"\t"$68*100}}' | tail -n +60 > {output.TWO} ||true
+		cat {output.FILTER}| cut -f9,10 | tail -n +60 > {output.THREE} || true
+		paste {output.ONE} {output.TWO} {output.THREE} > {output.FINALTEMP} || true
+		awk -F"\\t" '{{ if ($14 <= 0.5 || $15 <= 0.5) {{print}}}}' {output.FINALTEMP} > {output.FINAL} || true
+		"""
 
 rule GATK_VariantFiltration_Somatic:
 	input:
 		REF="UCSCWholeGenomeFasta/genome.fa",
 		VCF="CallVars_Output/VCF/{sample}_somatic_func.vcf"
 	output:
-		"CallVars_Output/VCF/{sample}_somatic_func_filter.vcf"
+		FILTER="CallVars_Output/VCF/{sample}_somatic_func_filter.vcf",
+		ONE="CallVars_Output/TEMPFILES/{sample}_CallVars_Somatic_TempOne.txt",
+		TWO="CallVars_Output/TEMPFILES/{sample}_CallVars_Somatic_TempTwo.txt",
+		THREE="CallVars_Output/TEMPFILES/{sample}_CallVars_Somatic_TempThree.txt",
+		FINALTEMP="CallVars_Output/TEMPFILES/{sample}_CallVars_Somatic_FinalTemp.txt",
+		FINAL="CallVars_Output/Results/{sample}_CallVars_Somatic.txt"
 	log:
 		"CallVars_Output/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
 		 mem="-Xmx30g -Xmx20g"
 	shell:
-		"gatk VariantFiltration -R {input.REF} -O {output} -V {input.VCF} --filter-expression \"(QD < 2.0) || (FS > 60.0) || (MQ < 40.0) || (MQRankSum < -12.5) || (ReadPosRankSum < -8.0) || (SOR > 3.0)\" --filter-name \"Fail\""
-	
+		"""
+		gatk VariantFiltration -R {input.REF} -O {output.FILTER} -V {input.VCF} --filter-expression \"(QD < 2.0) || (FS > 60.0) || (MQ < 40.0) || (MQRankSum < -12.5) || (ReadPosRankSum < -8.0) || (SOR > 3.0)\" --filter-name \"Fail\"
+		cat {output.FILTER}| cut -f1-7 | tail -n +71 > {output.ONE} || true
+		cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION\=\["  '{{ print $2 }}'  | awk -F"|" '{{ print $1"\t"$6"\t"$14"\t"$17"\t"$19"\t"$27"\t"$28*100"\t"$68*100}}' | tail -n +71 > {output.TWO} ||true
+		cat {output.FILTER}| cut -f9,10 | tail -n +71 > {output.THREE} || true
+		paste {output.ONE} {output.TWO} {output.THREE} > {output.FINALTEMP} || true
+		awk -F"\\t" '{{ if ($14 <= 0.5 || $15 <= 0.5) {{print}}}}' {output.FINALTEMP} > {output.FINAL} || true
+		"""
