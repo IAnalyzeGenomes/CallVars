@@ -132,7 +132,7 @@ rule GATK_Mutect2:
 	run:
 		#shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")
 		shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -L {input.MICANC} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")	
-		shell("rm -r CallVars_Output/TrimmedReads/ CallVars_Output/MappedReads/ CallVars_Output/SortedReads/ CallVars_Output/NoDupReads/")
+		#shell("rm -r CallVars_Output/TrimmedReads/ CallVars_Output/MappedReads/ CallVars_Output/SortedReads/ CallVars_Output/NoDupReads/")
 		
 rule GATK_Funcotator_Germline:
 	input:
