@@ -1,13 +1,14 @@
 # CallVars: 
 
-CallVars is an automated, reproducible Snakemake workflow that takes Illumina paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows Broad Institute's "Best Practices" guidlines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. CallVars can be helpful to anyone using targeted gene panels or whole exomes for rare disease or cancer diagnosis/treatment.
+CallVars is an automated, reproducible Snakemake workflow taking Illumina paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows Broad Institute's "Best Practices" guidlines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
 
-GnomAD allele frequency is a key filter used to report variants, having either genomes or exomes allele frequency less than 0.5%, for clinical review. Below GATK guidelines were used to apply generic hard-filtering to PASS/FAIL a variant.  
+CallVars can be helpful to anyone working with targeted gene panels or whole exomes for rare disease or cancer diagnosis/treatment. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes) with questions. Also, feedback, comments or bug reports are welcome for me to integrate improvements.
+
+CallVars currently uses GnomAD allele frequency as a key filter to report variants, having either genomes or exomes allele frequency less than 0.5%, for clinical review. Also, below GATK guidelines were used to apply generic hard-filtering to PASS/FAIL a variant.  
 https://software.broadinstitute.org/gatk/documentation/article.php?id=6925
 
-Note that CallVars uses hg19 version of human reference genome for Next-Gen Sequencing (NGS) data analysis. Below listed NGS analysis steps are performed by CallVars sequentially. 
-
-# Steps/Rules in CallVars:
+# CallVars workflow overview:
+CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 1) Pre-processing using Cutadapt
 2) Mapping using BWA
 3) Sorting using samtools
@@ -21,10 +22,7 @@ Note that CallVars uses hg19 version of human reference genome for Next-Gen Sequ
 11) Variant filtration for germline variants using GATK VariantFiltration
 12) Variant filtration for somatic variants using GATK VariantFiltration
 
-
-# Setting up working directory to run Snakemake:
-Below I have provided step-by-step instructions on successfully running CallVars, however feel free to DM me on twitter (@IAnalyzeGenomes) if you need assistance in setting up and running this workflow.
-
+# Setting up a working directory to run CallVars:
 All the below listed files/folders must be present in the working directory before you can run CallVars. 
 
 	- ‘FastQ’ folder containing paired-end reads ending in _R1.fastq and _R2.fastq (see attached for test files A_R1.fastq and A_R2.fastq)
@@ -60,7 +58,7 @@ You will need to download each of the below listed files from their respective o
 	Data source was downloaded using below link.
 	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124s.tar.gz
 
-# Running Snakemake workflow using linux terminal: 
+# Running CallVars on Linux terminal: 
 1)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
@@ -93,7 +91,7 @@ For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and 
 
 		snakemake CallVars_Output/Results/A_CallVars_Germline.txt CallVars_Output/VCF/A_CallVars_Somatic.txt --cores 6
 
-After the worklow has run successfully, below listed will be available for clinicians review.
+After the worklow has run successfully, below listed files will be available for clinician's review.
 
 1] CallVars_Output/Results/A_CallVars_Germline.txt containing a filtered list of germline variants.
 
@@ -103,4 +101,3 @@ After the worklow has run successfully, below listed will be available for clini
 
 4] CallVars_Output/VCF/A_somatic_func_filter.vcf containing a complete list of somatic variants.
 
-Feel free to DM me on twitter (@IAnalyzeGenomes) if you need assistance in setting up and running this workflow.
