@@ -1,6 +1,6 @@
 # CallVars: 
 
-CallVars is an automated, reproducible Snakemake workflow that takes Illumina paired-end FastQ files directly to a handful of high confidence variants for clinical review. This workflow largely follows Broad Institute's "Best Practices" guidlines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. CallVars can be helpful to anyone using targeted gene panels or whole exomes for rare disease or cancer diagnosis/treatment.
+CallVars is an automated, reproducible Snakemake workflow that takes Illumina paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows Broad Institute's "Best Practices" guidlines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. CallVars can be helpful to anyone using targeted gene panels or whole exomes for rare disease or cancer diagnosis/treatment.
 
 GnomAD allele frequency is a key filter used to report variants, having either genomes or exomes allele frequency less than 0.5%, for clinical review. Below GATK guidelines were used to apply generic hard-filtering to PASS/FAIL a variant.  
 https://software.broadinstitute.org/gatk/documentation/article.php?id=6925
@@ -25,7 +25,7 @@ Note that CallVars uses hg19 version of human reference genome for Next-Gen Sequ
 # Setting up working directory to run Snakemake:
 Below I have provided step-by-step instructions on successfully running CallVars, however feel free to DM me on twitter (@IAnalyzeGenomes) if you need assistance in setting up and running this workflow.
 
-All the below listed files/folders need must be present in the working directory before you can run CallVars. 
+All the below listed files/folders must be present in the working directory before you can run CallVars. 
 
 	- ‘FastQ’ folder containing paired-end reads ending in _R1.fastq and _R2.fastq (see attached for test files A_R1.fastq and A_R2.fastq)
 	- CallVars.yml (see attached files)
@@ -37,22 +37,22 @@ You will need to download each of the below listed files from their respective o
 	- 1000G_phase1.indels.hg19.sites.vcf.idx
 	- Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
 	- Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx
-	These files can be downloaded using below link.
+	These 1000 genome indel files can be downloaded using below link.
 	ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/
 	
 	- dbSNP_20180423.vcf
 	- dbSNP_20180423.vcf.idx
-	These files can be downloaded usibg below link.
+	These dbSNP files can be downloaded usibg below link.
 	ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/
 	
 	- GNOMAD_hg19.vcf
 	- GNOMAD_hg19.vcf.idx
-	These files can be downloaded usibg below link.
+	These gnomAD files can be downloaded using below link.
 	http://hgdownload.cse.ucsc.edu/gbdb/hg19/gnomAD/vcf/
 	
 	- HG19 Reference Genome Folder ‘UCSCWholeGenomeFasta’ containing files
   	genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
-	These files can be downloaded usibg below link.
+	These reference genome files can be downloaded using below link.
 	http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 	
 	- dataSourcesFolder containing below data source. 
@@ -93,4 +93,14 @@ For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and 
 
 		snakemake CallVars_Output/Results/A_CallVars_Germline.txt CallVars_Output/VCF/A_CallVars_Somatic.txt --cores 6
 
-Where CallVars_Output/Results/A_CallVars_Germline.txt is the filtered germline variant file and CallVars_Output/VCF/A_CallVars_Somatic.txt is the filtered somatic variant file.
+After the worklow has run successfully, below listed will be available for clinicians review.
+
+1] CallVars_Output/Results/A_CallVars_Germline.txt containing a filtered list of germline variants.
+
+2] CallVars_Output/Results/A_CallVars_Somatic.txt containing a filtered list of somatic variants.
+
+3] CallVars_Output/VCF/A_germline_func_filter.vcf containing a complete list of germline variants.
+
+4] CallVars_Output/VCF/A_somatic_func_filter.vcf containing a complete list of somatic variants.
+
+Feel free to DM me on twitter (@IAnalyzeGenomes) if you need assistance in setting up and running this workflow.
