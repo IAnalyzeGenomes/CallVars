@@ -23,35 +23,52 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 12) Variant filtration for somatic variants using GATK VariantFiltration
 
 # Setting up a working directory to run CallVars:
-All the below listed files/folders must be present in the working directory before you can run CallVars. 
+All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
 
-	- ‘FastQ’ folder containing paired-end reads ending in _R1.fastq and _R2.fastq (see attached for test files A_R1.fastq and A_R2.fastq)
-	- CallVars.yml (see attached files)
-	- Snakefile (see attached files)
+	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (see attached for test files A_R1.fastq and A_R2.fastq)
+	- "CallVars.yml" (attached in repo)
+	- "Snakefile" (attached in repo)
+	- "Target.bed" (Your target file in BED format)
 
-You will need to download each of the below listed files from their respective online public repositories. I have provided links to these resources.
+You will need to download each of the below listed files from their respective public repositories. I have provided links to these resources.
 
-	- 1000G_phase1.indels.hg19.sites.vcf
-	- 1000G_phase1.indels.hg19.sites.vcf.idx
-	- Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
-	- Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx
+	- "1000G_phase1.indels.hg19.sites.vcf"
+	- "1000G_phase1.indels.hg19.sites.vcf.idx"
+	- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+	- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx"
 	These 1000 genome indel files can be downloaded using below link.
 	ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/
 	
-	- dbSNP_20180423.vcf
-	- dbSNP_20180423.vcf.idx
+	- "dbSNP_20180423.vcf"
+	- "dbSNP_20180423.vcf.idx"
 	These dbSNP files can be downloaded usibg below link.
 	ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/
 	
-	- GNOMAD_hg19.vcf
-	- GNOMAD_hg19.vcf.idx
+	- "GNOMAD_hg19.vcf"
+	- "GNOMAD_hg19.vcf.idx"
 	These gnomAD files can be downloaded using below link.
 	http://hgdownload.cse.ucsc.edu/gbdb/hg19/gnomAD/vcf/
 	
 	- HG19 Reference Genome Folder ‘UCSCWholeGenomeFasta’ containing files
-  	genome.dict, genome.fa, genome.fa.amb, genome.fa.ann, genome.fa.bwt, genome.fa.fai, genome.fa.pac, genome.fa.sa, GenomeSize.xml
-	These reference genome files can be downloaded using below link.
+  	"genome.dict"
+	"genome.fa"
+	"genome.fa.amb" 
+	"genome.fa.ann"
+	"genome.fa.bwt"
+	"genome.fa.fai"
+	"genome.fa.pac"
+	"genome.fa.sa"
+	"GenomeSize.xml"
+	The reference genome files can be downloaded in 2bit format using below link.
 	http://hgdownload.cse.ucsc.edu/gbdb/hg19/
+	The utility program, twoBitToFa (available from the kent src tree), can be used to extract .fa file(s) from this file.  A pre-compiled version of the command line tool can be
+    found at:
+        http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
+	Converting 2bit to fa --> ./twoBitToFa hg19.2bit hg19.fa
+	renaming --> mv hg19.fa genome.fa
+	indexing .fa file --> bwa index genome.fa
+	Creating .dict file --> gatk CreateSequenceDictionary –R genome.fa
+
 	
 	- dataSourcesFolder containing below data source. 
 	Genecode, Clinvar, Gnomad
@@ -93,11 +110,8 @@ For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and 
 
 After the worklow has run successfully, below listed files will be available for clinician's review.
 
-1] CallVars_Output/Results/A_CallVars_Germline.txt containing a filtered list of germline variants.
-
-2] CallVars_Output/Results/A_CallVars_Somatic.txt containing a filtered list of somatic variants.
-
-3] CallVars_Output/VCF/A_germline_func_filter.vcf containing a complete list of germline variants.
-
-4] CallVars_Output/VCF/A_somatic_func_filter.vcf containing a complete list of somatic variants.
+	1] CallVars_Output/Results/A_CallVars_Germline.txt containing a filtered list of germline variants.
+	2] CallVars_Output/Results/A_CallVars_Somatic.txt containing a filtered list of somatic variants.
+	3] CallVars_Output/VCF/A_germline_func_filter.vcf containing a complete list of germline variants.
+	4] CallVars_Output/VCF/A_somatic_func_filter.vcf containing a complete list of somatic variants.
 
