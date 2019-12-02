@@ -2,9 +2,7 @@
 
 CallVars is an automated, reproducible Snakemake workflow which takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
 
-CallVars currently uses gnomAD allele frequency as a key filter to report variants, having either genomes or exomes allele frequency less than 0.5%, for clinical review. Also, [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to PASS/FAIL variants.  
-
-CallVars can be helpful to anyone working with targeted rare diseases/cancer gene panels to find and report variants of clinical relevance. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes) with questions. Feedback/comments/bug reports/contributions are welcome for improvement of this workflow.
+CallVars can be helpful to anyone working with targeted cancer/rare disease gene panels to find and report variants of clinical relevance. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes). Feedback/comments/bug reports/contributions are welcome for improvement of this workflow.
 
 # CallVars workflow overview:
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
@@ -19,7 +17,9 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 9) Functional annotation for germline variants using GATK Funcotator
 10) Functional annotation for somatic variants using GATK Funcotator
 11) Variant filtration for germline variants using GATK VariantFiltration
-12) Variant filtration for somatic variants using GATK VariantFiltration
+12) Variant filtration for somatic variants using GATK VariantFiltration 
+
+CallVars currently uses gnomAD allele frequency as a key filter to report variants, having either genomes or exomes allele frequency less than 0.5%, for clinical review. Also, [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to PASS/FAIL variants. 
 
 # Setting up a working directory to run CallVars:
 All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
