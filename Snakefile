@@ -97,7 +97,7 @@ rule GATK_BQSR:
 	log:
 		"CallVars/Logs/{sample}_GATK-BQSR.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"	
+		 mem="-Xmx4g"	
 	shell:
 		"gatk --java-options '{params.mem}' ApplyBQSR -R {input.REF} -I {input.BAM} --bqsr-recal-file {input.RECAL} -O {output} &>{log}"
 
@@ -112,7 +112,7 @@ rule GATK_HaplotypeCaller:
 	log:
 		"CallVars/Logs/{sample}_GATK-HaplotypeCaller.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem="-Xmx4g"
 	shell:
 		#"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -O {output} &>{log}"
 		"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -L {input.TARGET} -O {output} &>{log}"
@@ -128,7 +128,7 @@ rule GATK_Mutect2:
 	log:
 		"CallVars/Logs/{sample}_GATK-Mutect2.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem="-Xmx4g"
 	run:
 		#shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")
 		shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -L {input.TARGET} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")	
@@ -144,7 +144,7 @@ rule GATK_Funcotator_Germline:
 	log:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Germline.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem="-Xmx4g"
 	run:
 		shell("gatk --java-options '{params.mem}' Funcotator -R {input.REF} -V {input.VCF} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}")
 
@@ -157,7 +157,7 @@ rule GATK_Funcotator_Somatic:
 	log:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem="-Xmx4g"
 	run:
 		shell("gatk --java-options '{params.mem}' Funcotator -R {input.REF} -V {input.VCF} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}")
 
@@ -176,7 +176,7 @@ rule GATK_VariantFiltration_Germline:
 	log:
 		"CallVars/Logs/{sample}_GATK-VariantFiltration_Germline.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem="-Xmx4g"
 	shell:
 		"""
 		gatk VariantFiltration -R {input.REF} -O {output.FILTER} -V {input.VCF} --filter-expression \"(QD < 2.0) || (FS > 60.0) || (MQ < 40.0) || (MQRankSum < -12.5) || (ReadPosRankSum < -8.0) || (SOR > 3.0)\" --filter-name \"Fail\"
@@ -201,7 +201,7 @@ rule GATK_VariantFiltration_Somatic:
 	log:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem="-Xmx4g"
 	shell:
 		"""
 		gatk VariantFiltration -R {input.REF} -O {output.FILTER} -V {input.VCF} --filter-expression \"(QD < 2.0) || (FS > 60.0) || (MQ < 40.0) || (MQRankSum < -12.5) || (ReadPosRankSum < -8.0) || (SOR > 3.0)\" --filter-name \"Fail\"
