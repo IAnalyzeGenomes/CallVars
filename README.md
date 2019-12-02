@@ -1,11 +1,10 @@
 # CallVars: 
 
-CallVars is an automated, reproducible Snakemake workflow taking Illumina paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows Broad Institute's "Best Practices" guidlines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
+CallVars is an automated, reproducible Snakemake workflow which takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
 
-CallVars can be helpful to anyone working with targeted gene panels or whole exomes for rare disease or cancer diagnosis/treatment. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes) with questions. Also, feedback, comments or bug reports are welcome for me to integrate improvements.
+CallVars currently uses gnomAD allele frequency as a key filter to report variants, having either genomes or exomes allele frequency less than 0.5%, for clinical review. Also, [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to PASS/FAIL variants.  
 
-CallVars currently uses GnomAD allele frequency as a key filter to report variants, having either genomes or exomes allele frequency less than 0.5%, for clinical review. Also, below GATK guidelines were used to apply generic hard-filtering to PASS/FAIL a variant.  
-https://software.broadinstitute.org/gatk/documentation/article.php?id=6925
+CallVars can be helpful to anyone working with targeted rare diseases/cancer gene panels to find and report variants of clinical relevance. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes) with questions. Feedback/comments/bug reports/contributions are welcome for improvement of this workflow.
 
 # CallVars workflow overview:
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
@@ -61,9 +60,7 @@ You will need to download each of the below listed files from their respective p
 	"GenomeSize.xml"
 	The reference genome files can be downloaded in 2bit format using below link.
 	http://hgdownload.cse.ucsc.edu/gbdb/hg19/
-	The utility program, twoBitToFa (available from the kent src tree), can be used to extract .fa file(s) from this file.  A pre-compiled version of the command line tool can be
-    found at:
-        http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
+	The utility program, twoBitToFa (available from the kent src tree), can be used to extract .fa file(s) from this file.  A pre-compiled version of the command line tool can be found at: http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
 	Converting 2bit to fa --> ./twoBitToFa hg19.2bit hg19.fa
 	renaming --> mv hg19.fa genome.fa
 	indexing .fa file --> bwa index genome.fa
@@ -108,7 +105,7 @@ For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and 
 
 		snakemake CallVars_Output/Results/A_CallVars_Germline.txt CallVars_Output/VCF/A_CallVars_Somatic.txt --cores 6
 
-After the worklow has run successfully, below listed files will be available for clinician's review.
+After the worklow has run successfully, below listed files will be available for clinical review.
 
 	1] CallVars_Output/Results/A_CallVars_Germline.txt containing a filtered list of germline variants.
 	2] CallVars_Output/Results/A_CallVars_Somatic.txt containing a filtered list of somatic variants.
