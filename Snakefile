@@ -8,8 +8,8 @@ rule CUTADAPT_Trim1:
 	log:
 		"CallVars/Logs/{sample}_CUTADAPT-Trimming.log"
 	shell:
-		"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j 6 &>{log}"
-		#"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}"
+		#"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j 6 &>{log}"
+		"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}"
 
 rule CUTADAPT_Trim2:
 	input:
@@ -21,8 +21,8 @@ rule CUTADAPT_Trim2:
 	log:
 		"CallVars/Logs/{sample}_CUTADAPT-Trimming.log"
 	shell:
-		"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j 6 &>{log}"
-		#"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}"
+		#"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j 6 &>{log}"
+		"cutadapt -q 20,20 --trim-n -a AGATCGGAAGAGC -A AGATCGGAAGAGC -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}"
 
 rule BWA_Mapping:
 	input:
@@ -36,8 +36,8 @@ rule BWA_Mapping:
 	log:
 		"CallVars/Logs/{sample}_BWA-Mapping.log"
 	shell:
-		"bwa mem -R '{params.rg}' -t 6  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} -@ 6 2>{log}"
-		#"bwa mem -R '{params.rg}' -t 6  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} 2>{log}"
+		#"bwa mem -R '{params.rg}' -t 6  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} -@ 6 2>{log}"
+		"bwa mem -R '{params.rg}' -t 6  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} 2>{log}"
 
 rule SAMTOOLS_Sort:
 	input:
@@ -47,10 +47,10 @@ rule SAMTOOLS_Sort:
 	log:
 		"CallVars/Logs/{sample}_SAMTOOLS-sort.log"
 	shell:
-		"samtools sort -T CallVars/SortedReads/{wildcards.sample} "
-		"-O bam {input} > {output} -@ 6 2>{log}"
 		#"samtools sort -T CallVars/SortedReads/{wildcards.sample} "
-		#"-O bam {input} > {output} 2>{log}"
+		#"-O bam {input} > {output} -@ 6 2>{log}"
+		"samtools sort -T CallVars/SortedReads/{wildcards.sample} "
+		"-O bam {input} > {output} 2>{log}"
 rule GATK_MarkDuplicates:
 	input:
 		"CallVars/SortedReads/{sample}.bam"
@@ -70,8 +70,8 @@ rule SAMTOOLS_Index:
 	#conda:
 	#	"config/Config_BWA-Samtools-Cutadapt.yml"
 	shell:
-		"samtools index {input} -@ 6"
-		#"samtools index {input}"
+		#"samtools index {input} -@ 6"
+		"samtools index {input}"
 
 rule GATK_BaseRecalibrator:
 	input:
