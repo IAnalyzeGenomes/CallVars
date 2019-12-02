@@ -24,7 +24,7 @@ CallVars currently uses gnomAD allele frequency as a key filter to report varian
 # Setting up a working directory to run CallVars:
 All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
 
-	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (see attached for test files A_R1.fastq and A_R2.fastq)
+	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
 	- "CallVars.yml" (attached in repo)
 	- "Snakefile" (attached in repo)
 	- "Target.bed" (Your target file in BED format)
@@ -97,18 +97,24 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 		conda activate CallVars
 
 6)	Running snakemake: 
-		Ensure you run the below command in working directory.
+		Ensure you run the below command's in working directory.
 
-		snakemake CallVars_Output/Results/{your_sample_name}_CallVars_Germline.txt CallVars_Output/VCF/{your_sample_name}_CallVars_Somatic.vcf --cores N
+		Dry run:
+		snakemake -np CallVars/Reports/{your_sample_name}_Germline.txt CallVars/Reports/{your_sample_name}_Somatic.txt --cores N
+		Real run:
+		snakemake CallVars/Reports/{your_sample_name}_Germline.txt CallVars/Reports/{your_sample_name}_Somatic.txt --cores N
 
 For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and number of cores available are 6 then run below command.
 
-		snakemake CallVars_Output/Results/A_CallVars_Germline.txt CallVars_Output/VCF/A_CallVars_Somatic.txt --cores 6
+		Dry run:
+		snakemake -np CallVars/Reports/A_Germline.txt CallVars/Reports/A_Somatic.txt --cores 6
+		Real run:
+		snakemake CallVars/Reports/A_Germline.txt CallVars/Reports/A_Somatic.txt --cores 6
 
 After the worklow has run successfully, below listed files will be available for clinical review.
 
-	1] CallVars_Output/Results/A_CallVars_Germline.txt containing a filtered list of germline variants.
-	2] CallVars_Output/Results/A_CallVars_Somatic.txt containing a filtered list of somatic variants.
-	3] CallVars_Output/VCF/A_germline_func_filter.vcf containing a complete list of germline variants.
-	4] CallVars_Output/VCF/A_somatic_func_filter.vcf containing a complete list of somatic variants.
+	1] CallVars/Reports/A_Germline.txt containing a filtered list of germline variants.
+	2] CallVars/Reports/A_Somatic.txt containing a filtered list of somatic variants.
+	3] CallVars/Reports/A_Germline_All.vcf containing a full list of germline variants.
+	4] CallVars/Reports/A_Somatic_All.vcf containing a full list of somatic variants.
 
