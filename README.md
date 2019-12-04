@@ -18,74 +18,75 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 
 CallVars can be helpful to anyone working with targeted cancer/rare disease gene panels to find and report variants of clinical relevance. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes). Feedback/comments/bug reports/contributions are welcome for its improvement.
 
-# CallVars workflow overview:
+# CallVars Workflow :
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
-1) Pre-processing using Cutadapt
 
-	Pre-processing prepares the data for NGS analysis. When DNA or RNA molecules are sequenced using Illumina short reads technology, the machine may sequence into the adapter ligated to the 3’ end of each molecule during library preparation. Consequently, the reads that are output contain the sequence of the molecule of interest and also the adapter sequence. Also, with Illumina sequencing machines, the quality of reads is high at the beginning but degrades towards the 3’ end of the reads. 
-	
-	CallVars uses Cutadapt to remove adapters from sequencing reads. Cutadapt also trims the read ends with quality below 20 and removes the ambiguous bases (N’s) from the reads ends. 
+## 1) Pre-processing using Cutadapt
 
-	You will need to edit the snakefile (line 12 and line 25) to remove below adapters and include adapters used by your library preparation kit.
+Pre-processing prepares the data for NGS analysis. When DNA or RNA molecules are sequenced using Illumina short reads technology, the machine may sequence into the adapter ligated to the 3’ end of each molecule during library preparation. Consequently, the reads that are output contain the sequence of the molecule of interest and also the adapter sequence. Also, with Illumina sequencing machines, the quality of reads is high at the beginning but degrades towards the 3’ end of the reads. 
 	
-	AGATCGGAAGAGC 
+CallVars uses Cutadapt to remove adapters from sequencing reads. Cutadapt also trims the read ends with quality below 20 and removes the ambiguous bases (N’s) from the reads ends. 
+
+You will need to edit the snakefile (line 12 and line 25) to remove below adapters and include adapters used by your library preparation kit.
 	
-	AGATCGGAAGAGC
+AGATCGGAAGAGC 
+	
+AGATCGGAAGAGC
 	 
 
-2) Mapping using BWA
+## 2) Mapping using BWA
 	
-	Once the high quality reads are obtained from pre-processing, the next step is mapping them to human reference genome. CallVars use industry standard BWA-mem to map short Illumina paired-end reads to hg19 version of human reference genome. This step generate a Binary Alignment Map also called a BAM file. The reference genome files needed for the analysis were downloaded in 2bit format using below link.
+Once the high quality reads are obtained from pre-processing, the next step is mapping them to human reference genome. CallVars use industry standard BWA-mem to map short Illumina paired-end reads to hg19 version of human reference genome. This step generate a Binary Alignment Map also called a BAM file. The reference genome files needed for the analysis were downloaded in 2bit format using below link.
 	
-	http://hgdownload.cse.ucsc.edu/gbdb/hg19/
+http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 
-3) Sorting using samtools
+## 3) Sorting using samtools
 	
-	Now that we have a BAM file, we need to index it. All BAM files need an index, as they tend to be large and the index allows us to perform computationally complex operations on these files without it taking days to complete. Before we index the BAM file we need to sort them by position and remove duplicates. This step performs sorting the BAM file by position.
+Now that we have a BAM file, we need to index it. All BAM files need an index, as they tend to be large and the index allows us to perform computationally complex operations on these files without it taking days to complete. Before we index the BAM file we need to sort them by position and remove duplicates. This step performs sorting the BAM file by position.
 	
-4) Removing duplicates using GATK MarkDuplicates
+## 4) Removing duplicates using GATK MarkDuplicates
 	
-	CallVars uses this tool to locate and remove duplicate reads in a BAM file, where duplicate reads are defined as originating from a single fragment of DNA. Duplicates can arise during sample preparation e.g. library construction using PCR. The MarkDuplicates tool works by comparing sequences in the 5 prime positions of read-pairs in a BAM file.
+CallVars uses this tool to locate and remove duplicate reads in a BAM file, where duplicate reads are defined as originating from a single fragment of DNA. Duplicates can arise during sample preparation e.g. library construction using PCR. The MarkDuplicates tool works by comparing sequences in the 5 prime positions of read-pairs in a BAM file.
 	
-5) Indexing using samtools
+## 5) Indexing using samtools
 	
-	CallVars now perform indexing discussed in step 3 using samtools. 
+CallVars now perform indexing discussed in step 3 using samtools. 
 	
-6) Base quality score recalibration using GATK BaseRecalibrator and ApplyBQSR
+## 6) Base quality score recalibration using GATK BaseRecalibrator and ApplyBQSR
 	
-	CallVars uses GATK BaseRecalibrator and ApplyBQSR to perform Base Quality Score Recalibration (BQSR). Every base sequenced by machine is assigned a base quality score. These scores play an important role in variant detection. Unfortunately, the scores produced by the machines are subject to various sources of systematic (non-random) technical error. Some of these errors are due to the physics or the chemistry of how the sequencing reaction works, and some are probably due to manufacturing flaws in the equipment.
+CallVars uses GATK BaseRecalibrator and ApplyBQSR to perform Base Quality Score Recalibration (BQSR). Every base sequenced by machine is assigned a base quality score. These scores play an important role in variant detection. Unfortunately, the scores produced by the machines are subject to various sources of systematic (non-random) technical error. Some of these errors are due to the physics or the chemistry of how the sequencing reaction works, and some are probably due to manufacturing flaws in the equipment.
 
-	BQSR uses a machine learning approach to model and correct systematic base scoring errors in particular regions of the genome such as homopolymer runs. It works in a two-pass manner, first building a model over all bases in the dataset as well as a set of known variants and writing the model to a recalibration table, as performed by GATK BaseRecalibrator. The second pass actually applies the learned model to correct per-base alignment quality scores to output a recalibrated BAM, as performed by GATK AppyBQSR. 
+BQSR uses a machine learning approach to model and correct systematic base scoring errors in particular regions of the genome such as homopolymer runs. It works in a two-pass manner, first building a model over all bases in the dataset as well as a set of known variants and writing the model to a recalibration table, as performed by GATK BaseRecalibrator. The second pass actually applies the learned model to correct per-base alignment quality scores to output a recalibrated BAM, as performed by GATK AppyBQSR. 
 	
 
-7) Germline variant detection using GATK HaplotypeCaller
+## 7) Germline variant detection using GATK HaplotypeCaller
 
-	CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local re-assembly of haplotypes. The HaplotypeCaller is capable of calling SNPs and indels simultaneously via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper.
+CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local re-assembly of haplotypes. The HaplotypeCaller is capable of calling SNPs and indels simultaneously via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper.
 
-8) Somatic variant detection using GATK Mutect2
+## 8) Somatic variant detection using GATK Mutect2
 	
-	CallVars uses GATK Mutect2 to call somatic short mutations via local assembly of haplotypes. Short mutations include single nucleotide (SNA) and insertion and deletion (indel) alterations. The caller uses a Bayesian somatic genotyping model and uses the assembly-based machinery of HaplotypeCaller. 
+CallVars uses GATK Mutect2 to call somatic short mutations via local assembly of haplotypes. Short mutations include single nucleotide (SNA) and insertion and deletion (indel) alterations. The caller uses a Bayesian somatic genotyping model and uses the assembly-based machinery of HaplotypeCaller. 
 
-9) Functional annotation for germline variants using GATK Funcotator
+## 9) Functional annotation for germline variants using GATK Funcotator
 	
-	CallVars uses GATK Funcotator (FUNCtional annOTATOR) to analyze given variants for their function (as retrieved from a set of data sources) and produces the analysis in a specified output file. This tool is a functional annotation tool that allows a user to add annotations to called variants based on a set of data sources, each with its own matching criteria.
+CallVars uses GATK Funcotator (FUNCtional annOTATOR) to analyze given variants for their function (as retrieved from a set of data sources) and produces the analysis in a specified output file. This tool is a functional annotation tool that allows a user to add annotations to called variants based on a set of data sources, each with its own matching criteria.
 	
-	Data from Genecode, Clinvar and Gnomad were used for annotation of variants. Data source was downloaded using below link.
+Data from Genecode, Clinvar and Gnomad were used for annotation of variants. Data source was downloaded using below link.
 	
-	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124s.tar.gz
+https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124s.tar.gz
 	
-10) Functional annotation for somatic variants using GATK Funcotator
+## 10) Functional annotation for somatic variants using GATK Funcotator
 	
-	This step performs functional annotation as discussed in step 10 for somatic variants.
+This step performs functional annotation as discussed in step 9 for somatic variants.
 
-11) Variant filtration for germline variants using GATK VariantFiltration
+## 11) Variant filtration for germline variants using GATK VariantFiltration
 	
-	 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Variants are not filtered out based on their PASS/FAIL status.
-	 CallVars currently uses gnomAD allele frequency as a key filter to filter and report variants having either genomes or exomes allele frequency less than 0.5% for clinical review. 
+[GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Variants are not filtered out based on their PASS/FAIL status.
+CallVars currently uses gnomAD allele frequency as a key filter to filter and report variants having either genomes or exomes allele frequency less than 0.5% for clinical review. 
 	
-12) Variant filtration for somatic variants using GATK VariantFiltration 
+## 12) Variant filtration for somatic variants using GATK VariantFiltration 
 	
-	This step performs filtering as discussed in step 11 for Somatic variants.
+This step performs filtering as discussed in step 11 for Somatic variants.
 
 
 # Setting up a working directory to run CallVars:
