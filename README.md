@@ -2,7 +2,21 @@
 
 CallVars is an automated, reproducible Snakemake workflow which takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
 
-CallVars can be helpful to anyone working with targeted cancer/rare disease gene panels to find and report variants of clinical relevance. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes). Feedback/comments/bug reports/contributions are welcome for improvement of this workflow.
+CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
+1) Pre-processing using Cutadapt
+2) Mapping using BWA
+3) Sorting using samtools
+4) Removing duplicates using GATK MarkDuplicates
+5) Indexing using samtools
+6) Base quality score recalibration using GATK BaseRecalibrator and ApplyBQSR
+7) Germline variant detection using GATK HaplotypeCaller
+8) Somatic variant detection using GATK Mutect2
+9) Functional annotation for germline variants using GATK Funcotator
+10) Functional annotation for somatic variants using GATK Funcotator
+11) Variant filtration for germline variants using GATK VariantFiltration
+12) Variant filtration for somatic variants using GATK VariantFiltration 
+
+CallVars can be helpful to anyone working with targeted cancer/rare disease gene panels to find and report variants of clinical relevance. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes). Feedback/comments/bug reports/contributions are welcome for its improvement.
 
 # CallVars workflow overview:
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
@@ -56,13 +70,8 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 	
 	CallVars uses GATK Funcotator (FUNCtional annOTATOR) to analyze given variants for their function (as retrieved from a set of data sources) and produces the analysis in a specified output file. This tool is a functional annotation tool that allows a user to add annotations to called variants based on a set of data sources, each with its own matching criteria.
 	
-	Below listed data souces were used for annotation of variants.
+	Data from Genecode, Clinvar and Gnomad were used for annotation of variants. Data source was downloaded using below link.
 	
-	Genecode
-	Clinvar
-	Gnomad
-	
-	Data source was downloaded using below link.
 	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124s.tar.gz
 	
 10) Functional annotation for somatic variants using GATK Funcotator
