@@ -1,0 +1,23 @@
+#Parameters for rule CUTADAPT_Trim1 and CUTADAPT_Trim2
+
+adapter1_config: CTGTCTCTTATACACATCT
+adapter2_config: CTGTCTCTTATACACATCT
+q1_config: 20
+q2_config: 20
+cutadapt_threads_config: 1
+
+#parameters for rule BWA_Mapping and SAMTOOLS_Sort
+bwa_threads_config: 1
+samtools_threads_config: 1
+
+#parameters for rule GATK_HaplotypeCaller and GATK_Mutect2
+TARGET_config: Target.bed
+
+#parameters for rule GATK_VariantFiltration_Somatic and GATK_VariantFiltration_Germline
+gnomAD_Filter_config: 0.5
+QD_Filter_config: 2.0
+FS_Filter_config: 60.0
+MQ_Filter_config: 40.0
+MQRankSum_Filter_config: -12.5
+ReadPosRankSum_Filter_config: -8.0
+SOR_Filter_config: 3.0
