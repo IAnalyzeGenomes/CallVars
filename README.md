@@ -16,7 +16,7 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 11) Variant filtration for germline variants using GATK VariantFiltration
 12) Variant filtration for somatic variants using GATK VariantFiltration 
 
-CallVars can be helpful to anyone working with targeted cancer/rare disease gene panels to find and report variants of clinical relevance. If you think CallVars can help with your study feel free to DM me on twitter (@IAnalyzeGenomes). Feedback/comments/bug reports/contributions are welcome for its improvement.
+CallVars can be helpful to anyone working with targeted gene panels, for cancer or rare diseases, to detect variants that could help with disease diagnosis/treatment. If you think CallVars can help with your study, feel free to DM me on twitter (@IAnalyzeGenomes). Feedback/comments/bug reports/contributions are welcome for its improvement.
 
 # CallVars Workflow :
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
@@ -26,13 +26,6 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 Pre-processing prepares the data for NGS analysis. When DNA or RNA molecules are sequenced using Illumina short reads technology, the machine may sequence into the adapter ligated to the 3’ end of each molecule during library preparation. Consequently, the reads that are output contain the sequence of the molecule of interest and also the adapter sequence. Also, with Illumina sequencing machines, the quality of reads is high at the beginning but degrades towards the 3’ end of the reads. 
 	
 CallVars uses Cutadapt to remove adapters from sequencing reads. Cutadapt also trims the read ends with quality below 20 and removes the ambiguous bases (N’s) from the reads ends. 
-
-You will need to edit the snakefile (line 12 and line 25) to remove below adapters and include adapters used by your library preparation kit.
-	
-AGATCGGAAGAGC 
-	
-AGATCGGAAGAGC
-	 
 
 ## 2) Mapping using BWA
 	
@@ -88,14 +81,22 @@ CallVars currently uses gnomAD allele frequency as a key filter to filter and re
 	
 This step performs filtering as discussed in step 11 for Somatic variants.
 
+# Customizing CallVars:
+CallVars is configured to run with parameters listed in config.yaml file. You can change parameter values in config file to customize the workflow to your needs.
 
 # Setting up a working directory to run CallVars:
 All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
 
 	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
-	- "CallVars.yml" (attached in repo)
-	- "Snakefile" (attached in repo)
-	- "Target.bed" (Your target file in BED format)
+	- "CallVars.yml" (Attached in repo)
+	- "Snakefile" (Attached in repo)
+	- "config.yaml" (Attached in repo)
+	- "Target.bed" (Attached in repo. This file contains below liested 64 cancer genes. This file can be replaced by your target file in BED format)
+	ALK, APC, ATM, AXIN2, BAP1, BARD1, BMPR1A, BRCA1, BRCA2, BRIP1, CDC73, CDH1, CDK4, CDKN1C, CDKN2A, CHEK2,
+	DICER1, EPCAM, FANCC, FH, FLCN, GPC3, GREM1, HOXB13, MAX, MEN1, MET, MITF, MLH1, MSH2, MSH6, MUTYH, NBN, 
+	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
+	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
+	
 
 You will need to download each of the below listed files from their respective public repositories. I have provided links to these resources.
 
