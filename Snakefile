@@ -16,8 +16,8 @@ rule CUTADAPT_Trim1:
 	params:
 		adp1=expand("{adp1}", adp1=config["adapter1_config"]),
 		adp2=expand("{adp2}", adp2=config["adapter2_config"]),
-		Q1=expand("{adp2}", adp2=config["q1_config"]),
-		Q2=expand("{adp2}", adp2=config["q2_config"]),
+		Q1=expand("{Q1}", adp2=config["q1_config"]),
+		Q2=expand("{Q2}", adp2=config["q2_config"]),
 		cutadapt_threads=expand("{cutadapt_threads}", cutadapt_threads=config["cutadapt_threads_config"])
 	shell:
 		"cutadapt -q {params.Q1},{params.Q2} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
@@ -34,8 +34,8 @@ rule CUTADAPT_Trim2:
 	params:
 		adp1=expand("{adp1}", adp1=config["adapter1_config"]),
 		adp2=expand("{adp2}", adp2=config["adapter2_config"]),
-		Q1=expand("{adp2}", adp2=config["q1_config"]),
-		Q2=expand("{adp2}", adp2=config["q2_config"]),
+		Q1=expand("{Q1}", adp2=config["q1_config"]),
+		Q2=expand("{Q2}", adp2=config["q2_config"]),
 		cutadapt_threads=expand("{cutadapt_threads}", cutadapt_threads=config["cutadapt_threads_config"])
 	shell:
 		"cutadapt -q {params.Q2},{params.Q1} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
@@ -229,10 +229,16 @@ rule GATK_VariantFiltration_Somatic:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
 		mem="-Xmx30g -Xmx20g",
-		gnomAD_Filter=expand("{gnomAD_Filter}", gnomAD_Filter=config["gnomAD_Filter_config"]),
+		gnomAD_Filter=expand("{gnomAD_Filter}", gnomAD_Filter=config["gnomAD_Filter_config"])
+		QD_Filter=expand("{QD_Filter}", QD_Filter=config["QD_Filter_config"]),
+		FS_Filter=expand("{FS_Filter}", FS_Filter=config["FS_Filter_config"]),
+		MQ_Filter=expand("{MQ_Filter}", MQ_Filter=config["MQ_Filter_config"]),
+		MQRankSum_Filter=expand("{MQRankSum_Filter}", MQRankSum_Filter=config["MQRankSum_Filter_config"]),
+		ReadPosRankSum_Filter=expand("{ReadPosRankSum_Filter}", ReadPosRankSum_Filter=config["ReadPosRankSum_Filter_config"]),
+		SOR_Filter=expand("{SOR_Filter}", SOR_Filter=config["SOR_Filter_config"])
 	shell:
 		"""
-		gatk --java-options '{params.mem}' VariantFiltration -R {input.REF} -O {output.FILTER} -V {input.VCF} --filter-expression \"(QD < 2.0) || (FS > 60.0) || (MQ < 40.0) || (MQRankSum < -12.5) || (ReadPosRankSum < -8.0) || (SOR > 3.0)\" --filter-name \"Fail\" &>{log}
+		gatk --java-options '{params.mem}' VariantFiltration -R {input.REF} -O {output.FILTER} -V {input.VCF} --filter-expression \"(QD < {params.QD_Filter}) || (FS > {params.FS_Filter}) || (MQ < {params.MQ_Filter}) || (MQRankSum < {params.MQRankSum_Filter}) || (ReadPosRankSum < {params.ReadPosRankSum_Filter}) || (SOR > {params.SOR_Filter})\" --filter-name \"Fail\" &>{log}
 		cat {output.FILTER}| cut -f1-7 | tail -n +71 > {output.ONE} || true
 		cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION\=\["  '{{ print $2 }}'  | awk -F"|" '{{ print $1"\t"$6"\t"$14"\t"$17"\t"$19"\t"$27"\t"$28*100"\t"$68*100}}' | tail -n +71 > {output.TWO} ||true
 		cat {output.FILTER}| cut -f9,10 | tail -n +71 > {output.THREE} || true
