@@ -149,40 +149,43 @@ You will need to download each of the below listed files from their respective p
 	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124s.tar.gz
 
 # Running CallVars on Linux terminal: 
-1)	Check the working directory and FastQ files: 
+## 1)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
 Make sure your fastq files are in a ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. The pipeline also works with gzipped fastq files, say A_R1.fastq.gz and A_R2.fastq.gz.
 
-2)	Install miniconda: 
+## 2)	Install miniconda: 
 
 Use below link to install miniconda.
 
 https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
-3)	Install snakemake:
+## 3)	Install snakemake using conda:
 	
 		conda install -c bioconda -c conda-forge snakemake
 
-4)	Create environment CallVars:
+## 4)	Create environment CallVars using conda:
 	
 		conda env create –n CallVars –f CallVars.yml
 
-5)	Activate CallVars environment:
+## 5)	Activate CallVars environment using conda:
 
 		conda activate CallVars
 
-6)	Running snakemake on command line interface (CLI): 
-		Ensure you run the below command's in the working directory.
+## 6)	Running CallVars on command line interface (CLI): 
+Ensure you run the below command's in the working directory.
 
-		Use below command on CLI for a dry run:
-		snakemake -np 
-		Fix errors, if any, during the dry run.
+Use below command on CLI for a dry run:
 		
-		Use below command on CLI to execute the workflow:
-		snakemake 
+		snakemake -np
+Fix errors, if any, during the dry run. 
 		
-		Use below command on CLI if your machine supports multiple CPU cores:
+Use below command on CLI to execute the workflow:
+		
+		snakemake
+		
+Use below command on CLI if your machine supports multiple CPU cores:
+		
 		snakemake --cores N
 
 After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples then you will see these files for all your samples.
@@ -192,3 +195,7 @@ After the worklow has run successfully, below listed files will be available for
 	3] CallVars/Reports/A_Germline_All.vcf containing a full list of germline variants.
 	4] CallVars/Reports/A_Somatic_All.vcf containing a full list of somatic variants.
 
+# Author:
+[Amit Rupani](https://twitter.com/IAnalyzeGenomes) 
+
+If you think CallVars can help with your study, feel free to DM me on twitter [@IAnalyzeGenomes](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
