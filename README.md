@@ -1,4 +1,4 @@
-# CallVars: 
+# <ins>CallVars:</ins> 
 
 CallVars is an automated, reproducible and scalable Snakemake workflow that takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
 
@@ -20,7 +20,7 @@ CallVars can be helpful to anyone working with targeted gene panels to detect de
 
 If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
-# CallVars Workflow :
+# <ins>CallVars Workflow:</ins>
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 
 ## 1) Pre-processing using Cutadapt
@@ -85,12 +85,12 @@ CallVars currently uses gnomAD allele frequency as a key filter to report varian
 	
 This step performs filtering as discussed in step 11 for Somatic variants.
 
-# Customizing and Scaling CallVars:
+# <ins>Customizing and Scaling CallVars:</ins>
 CallVars is configured to run with parameters listed in config.yaml file, which is attached in this repository. 
 You can change parameter values in config file to customize the workflow to your needs. 
 You can also add list of your samples in config file to scale the workflow.
 
-# Setting up a working directory to run CallVars:
+# <ins>Setting up a working directory to run CallVars:</ins>
 All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
 
 	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
@@ -148,7 +148,7 @@ You will need to download each of the below listed files from their respective p
 	Data source was downloaded using below link.
 	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124s.tar.gz
 
-# Running CallVars on Linux terminal: 
+# <ins>Installing and Running CallVars on Linux Command Line Interface (CLI):</ins> 
 ## 1)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
@@ -172,7 +172,7 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 		conda activate CallVars
 
-## 6)	Running CallVars on command line interface (CLI): 
+## 6)	Running CallVars: 
 Ensure you run the below command's in the working directory.
 
 Use below command on CLI for a dry run:
@@ -195,7 +195,7 @@ After the worklow has run successfully, below listed files will be available for
 	3] CallVars/Reports/A_Germline_All.vcf containing a full list of germline variants.
 	4] CallVars/Reports/A_Somatic_All.vcf containing a full list of somatic variants.
 
-# Author:
+# <ins>Author:</ins>
 [Amit Rupani](https://twitter.com/IAnalyzeGenomes) 
 
 If you think CallVars can help with your study, feel free to DM me on twitter [@IAnalyzeGenomes](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
