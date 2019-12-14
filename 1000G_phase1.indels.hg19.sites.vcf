@@ -1,2 +1,6 @@
-This 1000 genomes indel files can be downloaded using below link.
+- "1000G_phase1.indels.hg19.sites.vcf"
+- "1000G_phase1.indels.hg19.sites.vcf.idx"
+- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx"
+These 1000 genome indel files can be downloaded using below link.
 ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/
