@@ -1,2 +1,4 @@
-This gnomAD files can be downloaded using below link.
+- "GNOMAD_hg19.vcf"
+- "GNOMAD_hg19.vcf.idx"
+These gnomAD files can be downloaded using below link.
 http://hgdownload.cse.ucsc.edu/gbdb/hg19/gnomAD/vcf/
