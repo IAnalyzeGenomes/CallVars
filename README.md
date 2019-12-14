@@ -1,6 +1,6 @@
 # CallVars: 
 
-CallVars is an automated, reproducible Snakemake workflow which takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
+CallVars is an automated, reproducible and scalable Snakemake workflow that takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
 
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 1) Pre-processing using Cutadapt
@@ -16,7 +16,9 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 11) Variant filtration for germline variants using GATK VariantFiltration
 12) Variant filtration for somatic variants using GATK VariantFiltration 
 
-CallVars can be helpful to anyone working with targeted gene panels, for cancer or rare diseases, to detect variants that could help with disease diagnosis/treatment. If you think CallVars can help with your study, feel free to DM me on twitter (@IAnalyzeGenomes). Feedback/comments/bug reports/contributions are welcome for its improvement.
+CallVars can be helpful to anyone working with targeted gene panels to detect deleterious variants that can potentially help with disease diagnosis/treatment. 
+
+If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
 # CallVars Workflow :
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
@@ -26,6 +28,8 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 Pre-processing prepares the data for NGS analysis. When DNA or RNA molecules are sequenced using Illumina short reads technology, the machine may sequence into the adapter ligated to the 3’ end of each molecule during library preparation. Consequently, the reads that are output contain the sequence of the molecule of interest and also the adapter sequence. Also, with Illumina sequencing machines, the quality of reads is high at the beginning but degrades towards the 3’ end of the reads. 
 	
 CallVars uses Cutadapt to remove adapters from sequencing reads. Cutadapt also trims the read ends with quality below 20 and removes the ambiguous bases (N’s) from the reads ends. 
+
+The adapters to be trimmed and threshold for quality values can be customized using the config.yaml file attached in this repository. 
 
 ## 2) Mapping using BWA
 	
@@ -74,15 +78,17 @@ This step performs functional annotation as discussed in step 9 for somatic vari
 
 ## 11) Variant filtration for germline variants using GATK VariantFiltration
 	
-[GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Variants are not filtered out based on their PASS/FAIL status.
-CallVars currently uses gnomAD allele frequency as a key filter to filter and report variants having either genomes or exomes allele frequency less than 0.5% for clinical review. 
+[GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
+CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 0.5% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
 	
 ## 12) Variant filtration for somatic variants using GATK VariantFiltration 
 	
 This step performs filtering as discussed in step 11 for Somatic variants.
 
-# Customizing CallVars:
-CallVars is configured to run with parameters listed in config.yaml file. You can change parameter values in config file to customize the workflow to your needs.
+# Customizing and Scaling CallVars:
+CallVars is configured to run with parameters listed in config.yaml file, which is attached in this repository. 
+You can change parameter values in config file to customize the workflow to your needs. 
+You can also add list of your samples in config file to scale the workflow.
 
 # Setting up a working directory to run CallVars:
 All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
@@ -129,7 +135,8 @@ You will need to download each of the below listed files from their respective p
 	"GenomeSize.xml"
 	The reference genome files can be downloaded in 2bit format using below link.
 	http://hgdownload.cse.ucsc.edu/gbdb/hg19/
-	The utility program, twoBitToFa (available from the kent src tree), can be used to extract .fa file(s) from this file.  A pre-compiled version of the command line tool can be found at: http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
+	The utility program, twoBitToFa (available from the kent src tree), can be used to extract .fa file(s) from this file.  
+	A pre-compiled version of the command line tool can be found at: http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
 	Converting 2bit to fa --> ./twoBitToFa hg19.2bit hg19.fa
 	renaming --> mv hg19.fa genome.fa
 	indexing .fa file --> bwa index genome.fa
@@ -165,22 +172,20 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 		conda activate CallVars
 
-6)	Running snakemake: 
-		Ensure you run the below command's in working directory.
+6)	Running snakemake on command line interface (CLI): 
+		Ensure you run the below command's in the working directory.
 
-		Dry run:
-		snakemake -np CallVars/Reports/{your_sample_name}_Germline.txt CallVars/Reports/{your_sample_name}_Somatic.txt --cores N
-		Real run:
-		snakemake CallVars/Reports/{your_sample_name}_Germline.txt CallVars/Reports/{your_sample_name}_Somatic.txt --cores N
+		Use below command on CLI for a dry run:
+		snakemake -np 
+		Fix errors, if any, during the dry run.
+		
+		Use below command on CLI to execute the workflow:
+		snakemake 
+		
+		Use below command on CLI if your machine supports multiple CPU cores:
+		snakemake --cores N
 
-For instance, if the names if the FastQ files are A_R1.fastq and A_R2.fastq and number of cores available are 6 then run below command.
-
-		Dry run:
-		snakemake -np CallVars/Reports/A_Germline.txt CallVars/Reports/A_Somatic.txt --cores 6
-		Real run:
-		snakemake CallVars/Reports/A_Germline.txt CallVars/Reports/A_Somatic.txt --cores 6
-
-After the worklow has run successfully, below listed files will be available for clinical review.
+After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples then you will see these files for all your samples.
 
 	1] CallVars/Reports/A_Germline.txt containing a filtered list of germline variants.
 	2] CallVars/Reports/A_Somatic.txt containing a filtered list of somatic variants.
