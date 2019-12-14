@@ -1,3 +1,7 @@
+#Provide list of your samples 
+SAMPLE:
+- A
+
 #Parameters for rule CUTADAPT_Trim1 and CUTADAPT_Trim2
 
 adapter1_config: CTGTCTCTTATACACATCT

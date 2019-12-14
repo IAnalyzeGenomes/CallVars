@@ -1,8 +1,8 @@
 configfile: "config.yaml"
 rule all:
 	input:
-		FINAL1="CallVars/Reports/A_Somatic.txt",
-		FINAL2="CallVars/Reports/A_Germline.txt"
+		FINAL1=expand("CallVars/Reports/{sample}_Somatic.txt", sample=config["SAMPLE"]),
+		FINAL2=expand("CallVars/Reports/{sample}_Germline.txt", sample=config["SAMPLE"])
 
 rule CUTADAPT_Trim1:
 	input:
@@ -16,8 +16,8 @@ rule CUTADAPT_Trim1:
 	params:
 		adp1=expand("{adp1}", adp1=config["adapter1_config"]),
 		adp2=expand("{adp2}", adp2=config["adapter2_config"]),
-		Q1=expand("{Q1}", adp2=config["q1_config"]),
-		Q2=expand("{Q2}", adp2=config["q2_config"]),
+		Q1=expand("{Q1}", Q1=config["q1_config"]),
+		Q2=expand("{Q2}", Q2=config["q2_config"]),
 		cutadapt_threads=expand("{cutadapt_threads}", cutadapt_threads=config["cutadapt_threads_config"])
 	shell:
 		"cutadapt -q {params.Q1},{params.Q2} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
@@ -34,8 +34,8 @@ rule CUTADAPT_Trim2:
 	params:
 		adp1=expand("{adp1}", adp1=config["adapter1_config"]),
 		adp2=expand("{adp2}", adp2=config["adapter2_config"]),
-		Q1=expand("{Q1}", adp2=config["q1_config"]),
-		Q2=expand("{Q2}", adp2=config["q2_config"]),
+		Q1=expand("{Q1}", Q1=config["q1_config"]),
+		Q2=expand("{Q2}", Q2=config["q2_config"]),
 		cutadapt_threads=expand("{cutadapt_threads}", cutadapt_threads=config["cutadapt_threads_config"])
 	shell:
 		"cutadapt -q {params.Q2},{params.Q1} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
@@ -229,7 +229,7 @@ rule GATK_VariantFiltration_Somatic:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
 		mem="-Xmx30g -Xmx20g",
-		gnomAD_Filter=expand("{gnomAD_Filter}", gnomAD_Filter=config["gnomAD_Filter_config"])
+		gnomAD_Filter=expand("{gnomAD_Filter}", gnomAD_Filter=config["gnomAD_Filter_config"]),
 		QD_Filter=expand("{QD_Filter}", QD_Filter=config["QD_Filter_config"]),
 		FS_Filter=expand("{FS_Filter}", FS_Filter=config["FS_Filter_config"]),
 		MQ_Filter=expand("{MQ_Filter}", MQ_Filter=config["MQ_Filter_config"]),
