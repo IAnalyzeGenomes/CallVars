@@ -51,7 +51,7 @@ rule CUTADAPT_Trim2:
 	shell:
 		"cutadapt -q {params.Q2},{params.Q1} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
 
-#Rule to mapping of reads to reference genome
+#Rule to perform mapping of reads to reference genome using BWA
 
 rule BWA_Mapping:
 	input:
