@@ -1,8 +1,13 @@
 configfile: "config.yaml"
+
+#Rule All
+
 rule all:
 	input:
 		FINAL1=expand("CallVars/Reports/{sample}_Somatic.txt", sample=config["SAMPLE"]),
 		FINAL2=expand("CallVars/Reports/{sample}_Germline.txt", sample=config["SAMPLE"])
+
+#Rule to perform adapter trimming using CUTADAPT for files ending in .fastq.gz
 
 rule CUTADAPT_Trim1:
 	input:
@@ -22,6 +27,8 @@ rule CUTADAPT_Trim1:
 	shell:
 		"cutadapt -q {params.Q1},{params.Q2} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
 
+#Rule to perform adapter trimming using CUTADAPT for files ending in .fastq
+
 rule CUTADAPT_Trim2:
 	input:
 		FWD="FastQ/{sample}_R1.fastq",
@@ -40,6 +47,8 @@ rule CUTADAPT_Trim2:
 	shell:
 		"cutadapt -q {params.Q2},{params.Q1} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
 
+#Rule to mapping of reads to reference genome
+
 rule BWA_Mapping:
 	input:
 		REF="UCSCWholeGenomeFasta/genome.fa",
@@ -56,6 +65,8 @@ rule BWA_Mapping:
 	shell:
 		"bwa mem -R '{params.rg}' -t {params.bwa_threads}  {input.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} -@ {params.samtools_threads} 2>{log}"
 
+#Rule to sort the BAM file by position using SAMTOOLS
+
 rule SAMTOOLS_Sort:
 	input:
 		"CallVars/MappedReads/{sample}.bam"
@@ -69,6 +80,8 @@ rule SAMTOOLS_Sort:
 		"samtools sort -T CallVars/SortedReads/{wildcards.sample} "
 		"-O bam {input} > {output} -@ {params.samtools_threads} 2>{log}"
 
+#Rule to remove duplicate reads using GATK MarkDuplicates
+
 rule GATK_MarkDuplicates:
 	input:
 		"CallVars/SortedReads/{sample}.bam"
@@ -80,6 +93,8 @@ rule GATK_MarkDuplicates:
 	shell:
 		"gatk MarkDuplicates --REMOVE_DUPLICATES -I={input} -O={output.first} -M={output.second} --VALIDATION_STRINGENCY=SILENT 2>{log}"
 
+#Rule to index the BAM file using SAMTOOLS
+
 rule SAMTOOLS_Index:
 	input:
 		"CallVars/NoDupReads/{sample}.bam"
@@ -89,6 +104,8 @@ rule SAMTOOLS_Index:
 		samtools_threads=expand("{samtools_threads}", samtools_threads=config["samtools_threads_config"])
 	shell:
 		"samtools index {input} -@ {params.samtools_threads}"
+
+#Rule to perform part one base quality score recalibration using GATK BaseRecalibrator
 
 rule GATK_BaseRecalibrator:
 	input:
@@ -100,11 +117,13 @@ rule GATK_BaseRecalibrator:
 	output:
 		"CallVars/BQSR/{sample}_recal_data.table"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem=expand("{mem}", mem=config["GATK_JAVA_config"])
 	log:
 		"CallVars/Logs/{sample}_GATK-BaseRecalibrator.log"
 	shell:
 		"gatk --java-options '{params.mem}' BaseRecalibrator -I {input.BAM} -R {input.REF} --known-sites {input.SNP} --known-sites {input.MILLS} --known-sites {input.GNOM} -O {output} &>{log}"
+
+#Rule to perform part two base quality score recalibration using GATK BQSR
 
 rule GATK_BQSR:
 	input:
@@ -116,9 +135,11 @@ rule GATK_BQSR:
 	log:
 		"CallVars/Logs/{sample}_GATK-BQSR.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"	
+		 mem=expand("{mem}", mem=config["GATK_JAVA_config"])	
 	shell:
 		"gatk --java-options '{params.mem}' ApplyBQSR -R {input.REF} -I {input.BAM} --bqsr-recal-file {input.RECAL} -O {output} &>{log}"
+
+#Rule to call germline variants using GATK HaplotypeCaller
 
 rule GATK_HaplotypeCaller:
 	input:
@@ -130,11 +151,12 @@ rule GATK_HaplotypeCaller:
 	log:
 		"CallVars/Logs/{sample}_GATK-HaplotypeCaller.log"
 	params:
-		mem="-Xmx30g -Xmx20g",
+		mem=expand("{mem}", mem=config["GATK_JAVA_config"]),
 		TARGET=expand("{TARGET}", TARGET=config["TARGET_config"])
 	shell:
-		#"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -O {output} &>{log}"
 		"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -L {params.TARGET} -O {output} &>{log}"
+
+#Rule to call somatic variants using GATK Mutect2
 		
 rule GATK_Mutect2:
 	input:
@@ -147,13 +169,16 @@ rule GATK_Mutect2:
 	log:
 		"CallVars/Logs/{sample}_GATK-Mutect2.log"
 	params:
-		mem="-Xmx30g -Xmx20g",
+		mem=expand("{mem}", mem=config["GATK_JAVA_config"]),
 		TARGET=expand("{TARGET}", TARGET=config["TARGET_config"])
-	run:
-		#shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")
-		shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -L {input.TARGET} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")	
-		shell("rm CallVars/TrimmedReads/{wildcards.sample}_Trimmed_R1.fastq.gz CallVars/TrimmedReads/{wildcards.sample}_Trimmed_R2.fastq.gz")
-		shell("rm CallVars/MappedReads/{wildcards.sample}.bam CallVars/SortedReads/{wildcards.sample}.bam CallVars/NoDupReads/{wildcards.sample}.bam")
+	shell:
+		"""
+		gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -L {input.TARGET} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}
+		rm CallVars/TrimmedReads/{wildcards.sample}_Trimmed_R1.fastq.gz CallVars/TrimmedReads/{wildcards.sample}_Trimmed_R2.fastq.gz
+		rm CallVars/MappedReads/{wildcards.sample}.bam CallVars/SortedReads/{wildcards.sample}.bam CallVars/NoDupReads/{wildcards.sample}.bam
+		"""
+
+#Rule to functionally annotate germline variants using GATK Funcotator 
 
 rule GATK_Funcotator_Germline:
 	input:
@@ -164,9 +189,11 @@ rule GATK_Funcotator_Germline:
 	log:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Germline.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem=expand("{mem}", mem=config["GATK_JAVA_config"])
 	run:
 		shell("gatk --java-options '{params.mem}' Funcotator -R {input.REF} -V {input.VCF} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}")
+
+#Rule to functionally annotate somatic variants using GATK Funcotator 
 
 rule GATK_Funcotator_Somatic:
 	input:
@@ -177,10 +204,11 @@ rule GATK_Funcotator_Somatic:
 	log:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
-		 mem="-Xmx30g -Xmx20g"
+		 mem=expand("{mem}", mem=config["GATK_JAVA_config"])
 	run:
 		shell("gatk --java-options '{params.mem}' Funcotator -R {input.REF} -V {input.VCF} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}")
 
+#Rule to add PASS/FAIL tags to germline variants using GATK VariantFiltration and then filter variants with gnomAD genomes or exomes allele freq less than 0.5%
 
 rule GATK_VariantFiltration_Germline:
 	input:
@@ -196,7 +224,7 @@ rule GATK_VariantFiltration_Germline:
 	log:
 		"CallVars/Logs/{sample}_GATK-VariantFiltration_Germline.log"
 	params:
-		mem="-Xmx30g -Xmx20g",
+		mem=expand("{mem}", mem=config["GATK_JAVA_config"]),
 		gnomAD_Filter=expand("{gnomAD_Filter}", gnomAD_Filter=config["gnomAD_Filter_config"]),
 		QD_Filter=expand("{QD_Filter}", QD_Filter=config["QD_Filter_config"]),
 		FS_Filter=expand("{FS_Filter}", FS_Filter=config["FS_Filter_config"]),
@@ -214,6 +242,8 @@ rule GATK_VariantFiltration_Germline:
 		awk -F"\\t" '{{ if ($14 <= {params.gnomAD_Filter} || $15 <= {params.gnomAD_Filter}) {{print}}}}' {output.FINALTEMP} > {output.FINAL} || true
 		"""
 
+#Rule to add PASS/FAIL tags to somatic variants using GATK VariantFiltration and then filter variants with gnomAD genomes or exomes allele freq less than 0.5%
+
 rule GATK_VariantFiltration_Somatic:
 	input:
 		REF="UCSCWholeGenomeFasta/genome.fa",
@@ -228,7 +258,7 @@ rule GATK_VariantFiltration_Somatic:
 	log:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
-		mem="-Xmx30g -Xmx20g",
+		mem=expand("{mem}", mem=config["GATK_JAVA_config"]),
 		gnomAD_Filter=expand("{gnomAD_Filter}", gnomAD_Filter=config["gnomAD_Filter_config"]),
 		QD_Filter=expand("{QD_Filter}", QD_Filter=config["QD_Filter_config"]),
 		FS_Filter=expand("{FS_Filter}", FS_Filter=config["FS_Filter_config"]),

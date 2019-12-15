@@ -14,6 +14,9 @@ cutadapt_threads_config: 1
 bwa_threads_config: 1
 samtools_threads_config: 1
 
+#GATK JAVA memory
+GATK_JAVA_config: -Xmx4g -Xmx2g
+
 #parameters for rule GATK_HaplotypeCaller and GATK_Mutect2
 TARGET_config: Target.bed
 
