@@ -1,5 +1,9 @@
 configfile: "config.yaml"
 
+#Before you run CallVars make sure,
+## 1) to correctly organize the working directory. (Read "Setting up a working directory to run CallVars:" section in README.md)
+## 2) to check the config.yaml file attached in repository for desired parameters to be used for analysis.
+
 #Rule All
 
 rule all:
@@ -279,4 +283,7 @@ onsuccess:
 	print("SUCCESS: CallVars has been run succesfully!!")
 onerror:
 	print("ERROR!! CallVars has been aborted!!")
+	print ("Before you run CallVars make sure to ")
+	print ("1. correctly organize the working directory. Read \"Setting up a working directory to run CallVars:\" section in README.md")
+	print ("2. check the config.yaml file for desired samples or parameters to be used for analysis.")
 
