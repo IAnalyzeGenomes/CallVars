@@ -1,9 +1,5 @@
 configfile: "config.yaml"
 
-#Before you run CallVars make sure,
-## 1) to correctly organize the working directory. (Read "Setting up a working directory to run CallVars:" section in README.md)
-## 2) to check the config.yaml file attached in repository for desired parameters to be used for analysis.
-
 #Rule All
 
 rule all:
@@ -28,8 +24,14 @@ rule CUTADAPT_Trim1:
 		Q1=expand("{Q1}", Q1=config["q1_config"]),
 		Q2=expand("{Q2}", Q2=config["q2_config"]),
 		cutadapt_threads=expand("{cutadapt_threads}", cutadapt_threads=config["cutadapt_threads_config"])
-	shell:
-		"cutadapt -q {params.Q1},{params.Q2} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
+	run:
+		cores = params.cutadapt_threads
+		if cores == ['1']:
+			print("You provided single CPU core for cutadapt to run.")
+			shell("cutadapt -q {params.Q1},{params.Q2} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}")
+		else:
+			print("You provided ", cores, "CPU cores for cutadapt to run.")
+			shell("cutadapt -q {params.Q1},{params.Q2} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}")
 
 #Rule to perform adapter trimming using CUTADAPT for files ending in .fastq
 
@@ -48,10 +50,16 @@ rule CUTADAPT_Trim2:
 		Q1=expand("{Q1}", Q1=config["q1_config"]),
 		Q2=expand("{Q2}", Q2=config["q2_config"]),
 		cutadapt_threads=expand("{cutadapt_threads}", cutadapt_threads=config["cutadapt_threads_config"])
-	shell:
-		"cutadapt -q {params.Q2},{params.Q1} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}"
+	run:	
+		cores = params.cutadapt_threads
+		if cores == ['1']:
+			print("You provided single CPU core for cutadapt to run.")
+			shell("cutadapt -q {params.Q1},{params.Q2} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} &>{log}")
+		else:
+			print("You provided ", cores, "CPU cores for cutadapt to run. ")
+			shell("cutadapt -q {params.Q1},{params.Q2} --trim-n -a {params.adp1} -A {params.adp2} -o {output.FWD_TRIM} -p {output.REV_TRIM}  {input} -j {params.cutadapt_threads} &>{log}")
 
-#Rule to perform mapping of reads to reference genome using BWA
+#Rule to mapping of reads to reference genome
 
 rule BWA_Mapping:
 	input:
@@ -127,7 +135,7 @@ rule GATK_BaseRecalibrator:
 	shell:
 		"gatk --java-options '{params.mem}' BaseRecalibrator -I {input.BAM} -R {input.REF} --known-sites {input.SNP} --known-sites {input.MILLS} --known-sites {input.GNOM} -O {output} &>{log}"
 
-#Rule to perform part two base quality score recalibration using GATK BQSR
+#Rule to perform part two of base quality score recalibration using GATK BQSR
 
 rule GATK_BQSR:
 	input:
@@ -158,10 +166,11 @@ rule GATK_HaplotypeCaller:
 		mem=expand("{mem}", mem=config["GATK_JAVA_config"]),
 		TARGET=expand("{TARGET}", TARGET=config["TARGET_config"])
 	shell:
+		#"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -O {output} &>{log}"
 		"gatk --java-options '{params.mem}' HaplotypeCaller -R {input.REF} -I {input.BAM} --dbsnp {input.SNP} -L {params.TARGET} -O {output} &>{log}"
 
 #Rule to call somatic variants using GATK Mutect2
-		
+	
 rule GATK_Mutect2:
 	input:
 		BAM="CallVars/BQSR/{sample}.bam",
@@ -176,6 +185,7 @@ rule GATK_Mutect2:
 		mem=expand("{mem}", mem=config["GATK_JAVA_config"]),
 		TARGET=expand("{TARGET}", TARGET=config["TARGET_config"])
 	shell:
+		#shell("gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}")
 		"""
 		gatk --java-options '{params.mem}' Mutect2 -R {input.REF} -I {input.BAM} -L {input.TARGET} -tumor {wildcards.sample} --germline-resource {input.GNOMAD} -O {output} &>{log}
 		rm CallVars/TrimmedReads/{wildcards.sample}_Trimmed_R1.fastq.gz CallVars/TrimmedReads/{wildcards.sample}_Trimmed_R2.fastq.gz
@@ -194,8 +204,8 @@ rule GATK_Funcotator_Germline:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Germline.log"
 	params:
 		 mem=expand("{mem}", mem=config["GATK_JAVA_config"])
-	run:
-		shell("gatk --java-options '{params.mem}' Funcotator -R {input.REF} -V {input.VCF} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}")
+	shell:
+		"gatk --java-options '{params.mem}' Funcotator -R {input.REF} -V {input.VCF} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}"
 
 #Rule to functionally annotate somatic variants using GATK Funcotator 
 
@@ -209,8 +219,8 @@ rule GATK_Funcotator_Somatic:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
 		 mem=expand("{mem}", mem=config["GATK_JAVA_config"])
-	run:
-		shell("gatk --java-options '{params.mem}' Funcotator -R {input.REF} -V {input.VCF} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}")
+	shell:
+		"gatk --java-options '{params.mem}' Funcotator -R {input.REF} -V {input.VCF} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}"
 
 #Rule to add PASS/FAIL tags to germline variants using GATK VariantFiltration and then filter variants with gnomAD genomes or exomes allele freq less than 0.5%
 
@@ -282,8 +292,6 @@ rule GATK_VariantFiltration_Somatic:
 onsuccess:
 	print("SUCCESS: CallVars has been run succesfully!!")
 onerror:
-	print("ERROR!! CallVars has been aborted!!")
-	print ("Before you run CallVars make sure to ")
+	print("ERROR!! CallVars has been aborted!! Before you run CallVars make sure to")
 	print ("1. correctly organize the working directory. Read \"Setting up a working directory to run CallVars:\" section in README.md")
 	print ("2. check the config.yaml file for desired samples or parameters to be used for analysis.")
-
