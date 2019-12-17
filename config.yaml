@@ -21,7 +21,7 @@ GATK_JAVA_config: -Xmx4g -Xmx2g
 TARGET_config: Target.bed
 
 #parameters for rule GATK_VariantFiltration_Somatic and GATK_VariantFiltration_Germline
-gnomAD_Filter_config: 0.5
+gnomAD_Filter_config: 1
 QD_Filter_config: 2.0
 FS_Filter_config: 60.0
 MQ_Filter_config: 40.0
