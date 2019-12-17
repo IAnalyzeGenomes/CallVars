@@ -1,7 +1,13 @@
+######################################################################################################################################
+############################################BEFORE YOU RUN CALLVARS##################################################################
+######################################################################################################################################
+#1. Make sure to correctly organize the working directory. Read "Setting up a working directory to run CallVars:" section in README.md
+#2. Make sure to check the config.yaml file for desired samples or parameters to be used for analysis.
+######################################################################################################################################	
+
 configfile: "config.yaml"
 
 #Rule All
-
 rule all:
 	input:
 		FINAL1=expand("CallVars/Reports/{sample}_Somatic.txt", sample=config["SAMPLE"]),
