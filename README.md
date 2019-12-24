@@ -2,6 +2,13 @@
 
 CallVars is an automated, reproducible and scalable Snakemake workflow that takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
 
+CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels for four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, in a panel of 64 cancer genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
+		
+	ALK, APC, ATM, AXIN2, BAP1, BARD1, BMPR1A, BRCA1, BRCA2, BRIP1, CDC73, CDH1, CDK4, CDKN1C, CDKN2A, CHEK2,
+	DICER1, EPCAM, FANCC, FH, FLCN, GPC3, GREM1, HOXB13, MAX, MEN1, MET, MITF, MLH1, MSH2, MSH6, MUTYH, NBN, 
+	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
+	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
+
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 1) Pre-processing using Cutadapt
 2) Mapping using BWA
@@ -16,7 +23,7 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 11) Variant filtration for germline variants using GATK VariantFiltration
 12) Variant filtration for somatic variants using GATK VariantFiltration 
 
-CallVars can be helpful to anyone working with targeted gene panels to detect deleterious variants that can potentially help with disease diagnosis/treatment. 
+CallVars can be helpful to anyone working with targeted gene panels to detect disease causing variants that can potentially help with disease diagnosis/treatment. 
 
 If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
