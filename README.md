@@ -104,7 +104,7 @@ All the below listed files/folders must be present in the working directory befo
 	- "CallVars.yml" (Attached in repo)
 	- "Snakefile" (Attached in repo)
 	- "config.yaml" (Attached in repo)
-	- "Target.bed" (Attached in repo. This file contains below liested 64 cancer genes. This file can be replaced by your target file in BED format)
+	- "Target.bed" (Attached in repo. This file contains below listed 64 cancer genes. This file can be replaced by your target file in BED format)
 	ALK, APC, ATM, AXIN2, BAP1, BARD1, BMPR1A, BRCA1, BRCA2, BRIP1, CDC73, CDH1, CDK4, CDKN1C, CDKN2A, CHEK2,
 	DICER1, EPCAM, FANCC, FH, FLCN, GPC3, GREM1, HOXB13, MAX, MEN1, MET, MITF, MLH1, MSH2, MSH6, MUTYH, NBN, 
 	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
