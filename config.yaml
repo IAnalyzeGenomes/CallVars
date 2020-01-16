@@ -8,16 +8,23 @@ adapter1_config: CTGTCTCTTATACACATCT
 adapter2_config: CTGTCTCTTATACACATCT
 q1_config: 20
 q2_config: 20
-cutadapt_threads_config: 1
+cutadapt_threads_config: 6
 
 #parameters for rule BWA_Mapping and SAMTOOLS_Sort
-bwa_threads_config: 1
-samtools_threads_config: 1
+bwa_threads_config: 6
+samtools_threads_config: 6
+
+#Reference Genome
+Reference: UCSCWholeGenomeFasta/genome.fa
 
 #GATK JAVA memory
-GATK_JAVA_config: -Xmx4g -Xmx2g
+GATK_JAVA_config: -Xmx30g -Xmx20g
 
-#parameters for rule GATK_HaplotypeCaller and GATK_Mutect2
+#parameters for rule GATK_BaseRecalibrator, GATK_BQSR, GATK_HaplotypeCaller and GATK_Mutect2
+dbSNP_Database: dbSNP_20180423.vcf
+MILLS_Database: Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
+dbSNPIndels_Database: 1000G_phase1.indels.hg19.sites.vcf
+GNOMAD_Database: GNOMAD_hg19.vcf
 TARGET_config: Target.bed
 
 #parameters for rule GATK_VariantFiltration_Somatic and GATK_VariantFiltration_Germline
