@@ -1,8 +1,8 @@
 ######################################################################################################################################
-############################################BEFORE YOU RUN CALLVARS##################################################################
+### BEFORE YOU RUN CALLVARS ##################################################################
 ######################################################################################################################################
 #1. Make sure to correctly organize the working directory. Read "Setting up a working directory to run CallVars:" section in README.md
-#2. Make sure to check the config.yaml file for desired samples or parameters to be used for analysis.
+#2. Make sure to check the config.yaml file for desired samples or parameters values to be used for analysis.
 ######################################################################################################################################	
 
 configfile: "config.yaml"
@@ -208,9 +208,11 @@ rule GATK_Funcotator_Germline:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Germline.log"
 	params:
 		 mem=expand("{mem}", mem=config["GATK_JAVA_config"]),
-		 REF=expand("{REF}", REF=config["Reference"])
+		 REF=expand("{REF}", REF=config["Reference"]),
+		 DataSource=expand("{DataSource}", DataSource=config["DataSource_config"]),
+		 RefSource=expand("{RefSource}", RefSource=config["Ref_config"])
 	shell:
-		"gatk --java-options '{params.mem}' Funcotator -R {params.REF} -V {input} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}"
+		"gatk --java-options '{params.mem}' Funcotator -R {params.REF} -V {input} -O {output} --output-file-format VCF --data-sources-path '{params.DataSource}'/ --ref-version '{params.RefSource}' &>{log}"
 
 #Rule to functionally annotate somatic variants using GATK Funcotator 
 
@@ -223,9 +225,11 @@ rule GATK_Funcotator_Somatic:
 		"CallVars/Logs/{sample}_GATK-Funcotator_Somatic.log"
 	params:
 		 mem=expand("{mem}", mem=config["GATK_JAVA_config"]),
-		 REF=expand("{REF}", REF=config["Reference"])
+		 REF=expand("{REF}", REF=config["Reference"]),
+		 DataSource=expand("{DataSource}", DataSource=config["DataSource_config"]),
+		 RefSource=expand("{RefSource}", RefSource=config["Ref_config"])
 	shell:
-		"gatk --java-options '{params.mem}' Funcotator -R {params.REF} -V {input} -O {output} --output-file-format VCF --data-sources-path dataSourcesFolder/ --ref-version hg19 &>{log}"
+		"gatk --java-options '{params.mem}' Funcotator -R {params.REF} -V {input} -O {output} --output-file-format VCF --data-sources-path '{params.DataSource}' --ref-version '{params.RefSource}' &>{log}"
 
 #Rule to add PASS/FAIL tags to germline variants using GATK VariantFiltration and then filter variants with gnomAD genomes or exomes allele freq less than 0.5%
 
