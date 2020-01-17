@@ -38,7 +38,7 @@ TARGET_config: Target_hg19.bed
 DataSource_config: dataSourcesFolderHG19/
 Ref_config: hg19
 
-## Files for hg19 version of human reference genome
+## Files for hg38 version of human reference genome
 # Reference: UCSCWholeGenomeFastaHG38/hg38.fa
 # dbSNP_Database: dbSNP_20180418_hg38.vcf
 # MILLS_Database: Mills_and_1000G_gold_standard.indels.hg38.vcf
