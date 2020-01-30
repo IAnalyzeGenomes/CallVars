@@ -9,25 +9,15 @@ CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Ind
 	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
 	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
 
-CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
-1) Pre-processing using Cutadapt
-2) Mapping using BWA
-3) Sorting using samtools
-4) Removing duplicates using GATK MarkDuplicates
-5) Indexing using samtools
-6) Base quality score recalibration using GATK BaseRecalibrator and ApplyBQSR
-7) Germline variant detection using GATK HaplotypeCaller
-8) Somatic variant detection using GATK Mutect2
-9) Functional annotation for germline variants using GATK Funcotator
-10) Functional annotation for somatic variants using GATK Funcotator
-11) Variant filtration for germline variants using GATK VariantFiltration
-12) Variant filtration for somatic variants using GATK VariantFiltration 
+CallVars can be helpful to anyone working with targeted gene panels or whole exomes to detect disease causing variants that can potentially help with disease diagnosis or treatment. 
 
-CallVars can be helpful to anyone working with targeted gene panels to detect disease causing variants that can potentially help with disease diagnosis/treatment. 
+**CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You can change parameter values in config file to customize the workflow to your needs. You can also add list of your samples in config file to scale the workflow.**
 
 If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
 # <ins>CallVars Workflow:</ins>
+![](CallVarsWorkflowEngine.PNG)
+
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 
 ## 1) Pre-processing using Cutadapt
@@ -91,11 +81,6 @@ CallVars currently uses gnomAD allele frequency as a key filter to report varian
 ## 12) Variant filtration for somatic variants using GATK VariantFiltration 
 	
 This step performs filtering as discussed in step 11 for Somatic variants.
-
-# <ins>Customizing and Scaling CallVars:</ins>
-CallVars is configured to run with parameters listed in config.yaml file, which is attached in this repository. 
-You can change parameter values in config file to customize the workflow to your needs. 
-You can also add list of your samples in config file to scale the workflow.
 
 # <ins>Setting up a working directory to run CallVars:</ins>
 All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
