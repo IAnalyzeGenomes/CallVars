@@ -1,4 +1,4 @@
-#Provide list of your samples 
+#Provide list of your samples below 
 SAMPLE:
 - A
 
@@ -8,11 +8,11 @@ adapter1_config: CTGTCTCTTATACACATCT
 adapter2_config: CTGTCTCTTATACACATCT
 q1_config: 20
 q2_config: 20
-cutadapt_threads_config: 6
+cutadapt_threads_config: 1
 
 #parameters for rule BWA_Mapping and SAMTOOLS_Sort
-bwa_threads_config: 6
-samtools_threads_config: 6
+bwa_threads_config: 1
+samtools_threads_config: 1
 
 #parameters for rule GATK_VariantFiltration_Somatic and GATK_VariantFiltration_Germline
 gnomAD_Filter_config: 1
