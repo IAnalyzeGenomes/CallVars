@@ -28,7 +28,7 @@ GATK_JAVA_config: -Xmx30g -Xmx20g
 
 #parameters for rule GATK_BaseRecalibrator, GATK_BQSR, GATK_HaplotypeCaller and GATK_Mutect2
 
-## Files for hg19 version of human reference genome
+# Files for hg19 version of human reference genome
 Reference: UCSCWholeGenomeFastaHG19/genome.fa
 dbSNP_Database: dbSNP_20180423_hg19.vcf
 MILLS_Database: Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
@@ -37,6 +37,8 @@ GNOMAD_Database: GNOMAD_hg19.vcf
 TARGET_config: Target_hg19.bed
 DataSource_config: dataSourcesFolderHG19/
 Ref_config: hg19
+CutGermline_config: 60
+CutSomatic_config: 72
 
 ## Files for hg38 version of human reference genome
 # Reference: UCSCWholeGenomeFastaHG38/hg38.fa
@@ -47,3 +49,5 @@ Ref_config: hg19
 # TARGET_config: Target_hg38.bed
 # DataSource_config: dataSourcesFolderHG38/
 # Ref_config: hg38
+# CutGermline_config: 630
+# CutSomatic_config: 642
