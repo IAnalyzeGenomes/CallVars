@@ -55,11 +55,11 @@ BQSR uses a machine learning approach to model and correct systematic base scori
 
 ## 7) Germline variant detection using GATK HaplotypeCaller
 
-CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local re-assembly of haplotypes. The HaplotypeCaller is capable of calling SNPs and indels simultaneously via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper.
+CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper.
 
 ## 8) Somatic variant detection using GATK Mutect2
 	
-CallVars uses GATK Mutect2 to call somatic short mutations via local assembly of haplotypes. Short mutations include single nucleotide (SNA) and insertion and deletion (indel) alterations. The caller uses a Bayesian somatic genotyping model and uses the assembly-based machinery of HaplotypeCaller. 
+CallVars uses GATK Mutect2 to call somatic short mutations via local assembly of haplotypes. Short mutations include single nucleotide (SNPs) and insertion and deletion (indels) alterations. The caller uses a Bayesian somatic genotyping model and uses the assembly-based machinery of HaplotypeCaller. 
 
 ## 9) Functional annotation for germline variants using GATK Funcotator
 	
@@ -76,7 +76,7 @@ This step performs functional annotation as discussed in step 9 for somatic vari
 ## 11) Variant filtration for germline variants using GATK VariantFiltration
 	
 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
-CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 0.5% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
+CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 1% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
 	
 ## 12) Variant filtration for somatic variants using GATK VariantFiltration 
 	
