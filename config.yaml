@@ -1,6 +1,10 @@
-#Provide list of your samples below 
+#Provide list of your samples 
 SAMPLE:
 - A
+#- NA12878
+#- NA24385
+#- NA24149
+#- NA24143
 
 #Parameters for rule CUTADAPT_Trim1 and CUTADAPT_Trim2
 
@@ -8,11 +12,11 @@ adapter1_config: CTGTCTCTTATACACATCT
 adapter2_config: CTGTCTCTTATACACATCT
 q1_config: 20
 q2_config: 20
-cutadapt_threads_config: 1
+cutadapt_threads_config: 6
 
 #parameters for rule BWA_Mapping and SAMTOOLS_Sort
-bwa_threads_config: 1
-samtools_threads_config: 1
+bwa_threads_config: 6
+samtools_threads_config: 6
 
 #parameters for rule GATK_VariantFiltration_Somatic and GATK_VariantFiltration_Germline
 gnomAD_Filter_config: 1
@@ -29,6 +33,7 @@ GATK_JAVA_config: -Xmx30g -Xmx20g
 #parameters for rule GATK_BaseRecalibrator, GATK_BQSR, GATK_HaplotypeCaller and GATK_Mutect2
 
 # Files for hg19 version of human reference genome
+Ref_config: hg19
 Reference: UCSCWholeGenomeFastaHG19/genome.fa
 dbSNP_Database: dbSNP_20180423_hg19.vcf
 MILLS_Database: Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
@@ -36,11 +41,11 @@ dbSNPIndels_Database: 1000G_phase1.indels.hg19.sites.vcf
 GNOMAD_Database: GNOMAD_hg19.vcf
 TARGET_config: Target_hg19.bed
 DataSource_config: dataSourcesFolderHG19/
-Ref_config: hg19
 CutGermline_config: 60
 CutSomatic_config: 72
 
 ## Files for hg38 version of human reference genome
+# Ref_config: hg38
 # Reference: UCSCWholeGenomeFastaHG38/hg38.fa
 # dbSNP_Database: dbSNP_20180418_hg38.vcf
 # MILLS_Database: Mills_and_1000G_gold_standard.indels.hg38.vcf
@@ -48,6 +53,5 @@ CutSomatic_config: 72
 # GNOMAD_Database: GNOMAD_somatic-hg38_af-only.hg38.vcf
 # TARGET_config: Target_hg38.bed
 # DataSource_config: dataSourcesFolderHG38/
-# Ref_config: hg38
 # CutGermline_config: 630
 # CutSomatic_config: 642
