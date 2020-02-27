@@ -30,7 +30,7 @@ The adapters to be trimmed and threshold for quality values can be customized us
 
 ## 2) Mapping using BWA
 	
-Once the high quality reads are obtained from pre-processing, the next step is mapping them to human reference genome. CallVars use industry standard BWA-mem to map short Illumina paired-end reads to hg19 version of human reference genome. This step generate a Binary Alignment Map also called a BAM file. The reference genome files needed for the analysis were downloaded in 2bit format using below link.
+Once the high quality reads are obtained from pre-processing, the next step is mapping them to human reference genome. CallVars use industry standard BWA-mem to map short Illumina paired-end reads to hg19/hg38 version of human reference genome. The reference genome to be used can be configured using the config.yaml file attached in the repo. This step generate a Binary Alignment Map also called a BAM file. The reference genome files needed for the analysis were downloaded in 2bit format using below link.
 	
 http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 
