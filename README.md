@@ -9,9 +9,9 @@ CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Ind
 	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
 	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
 
-CallVars can be helpful to anyone working with targeted gene panels or whole exomes to detect disease causing variants that can potentially help with disease diagnosis or treatment. 
+CallVars can be helpful to anyone working with targeted gene panels or whole exomes to detect disease causing/associated variants that can potentially help with disease diagnosis/treatment. 
 
-**CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You can change parameter values in config file to customize the workflow to your needs. You can also add list of your samples in config file to scale the workflow.**
+**CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You list of your samples (within "SAMPLE" section) in config file to scale the workflow. You can choose to run the workflow with hg19 or hg38 version of human reference genomes**
 
 If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
@@ -30,7 +30,9 @@ The adapters to be trimmed and threshold for quality values can be customized us
 
 ## 2) Mapping using BWA
 	
-Once the high quality reads are obtained from pre-processing, the next step is mapping them to human reference genome. CallVars use industry standard BWA-mem to map short Illumina paired-end reads to hg19/hg38 version of human reference genome. The reference genome to be used can be configured using the config.yaml file attached in the repo. This step generate a Binary Alignment Map also called a BAM file. The reference genome files needed for the analysis were downloaded in 2bit format using below link.
+Once the high quality reads are obtained from pre-processing, the next step is mapping them to human reference genome. CallVars uses BWA-mem to map short Illumina paired-end reads to hg19/hg38 version of human reference genome. The reference genome to be used can be configured using the config.yaml file attached in the repo. 
+
+This step generate a Binary Alignment Map also called a BAM file. The reference genome files needed for the analysis were downloaded in 2bit format using below link.
 	
 http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 
@@ -67,7 +69,7 @@ CallVars uses GATK Funcotator (FUNCtional annOTATOR) to analyze given variants f
 	
 Data from Genecode, Clinvar and Gnomad were used for annotation of variants. Data source was downloaded using below link.
 	
-https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124s.tar.gz
+https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 	
 ## 10) Functional annotation for somatic variants using GATK Funcotator
 	
@@ -138,7 +140,7 @@ You will need to download each of the below listed files from their respective p
 	- dataSourcesFolder containing below data source. 
 	Genecode, Clinvar, Gnomad
 	Data source was downloaded using below link.
-	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124s.tar.gz
+	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 
 # <ins>Installing and Running CallVars on Linux Command Line Interface (CLI):</ins> 
 ## 1)	Check the working directory and FastQ files: 
