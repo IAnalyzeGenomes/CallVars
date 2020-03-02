@@ -9,13 +9,14 @@ CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Ind
 	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
 	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
 
-CallVars can be helpful to anyone working with targeted gene panels or whole exomes to detect disease causing/associated variants that can potentially help with disease diagnosis/treatment. 
-
-**CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You list of your samples (within "SAMPLE" section) in config file to scale the workflow. You can choose to run the workflow with hg19 or hg38 version of human reference genomes**
+CallVars can be helpful to anyone working with targeted gene panels or whole exome to detect disease causing/associated variants that can potentially help with diagnosis/treatment. Check out the Callvars workflow section below for more details. 
 
 If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
+**Note that CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genomes**
+
 # <ins>CallVars Workflow:</ins>
+
 ![](CallVarsWorkflowEngine.PNG)
 
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
