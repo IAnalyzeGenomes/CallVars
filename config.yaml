@@ -1,10 +1,10 @@
 #Provide list of your samples 
 SAMPLE:
-- A
-#- NA12878
-#- NA24385
-#- NA24149
-#- NA24143
+ - A
+# - NA12878
+# - NA24385
+# - NA24149
+# - NA24143
 
 #Parameters for rule CUTADAPT_Trim1 and CUTADAPT_Trim2
 
