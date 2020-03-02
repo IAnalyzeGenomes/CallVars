@@ -12,11 +12,11 @@ adapter1_config: CTGTCTCTTATACACATCT
 adapter2_config: CTGTCTCTTATACACATCT
 q1_config: 20
 q2_config: 20
-cutadapt_threads_config: 6
+cutadapt_threads_config: 1
 
 #parameters for rule BWA_Mapping and SAMTOOLS_Sort
-bwa_threads_config: 6
-samtools_threads_config: 6
+bwa_threads_config: 1
+samtools_threads_config: 1
 
 #parameters for rule GATK_VariantFiltration_Somatic and GATK_VariantFiltration_Germline
 gnomAD_Filter_config: 1
@@ -28,7 +28,7 @@ ReadPosRankSum_Filter_config: -8.0
 SOR_Filter_config: 3.0
 
 #GATK JAVA memory
-GATK_JAVA_config: -Xmx30g -Xmx20g
+GATK_JAVA_config: -Xmx8g -Xmx4g
 
 #parameters for rule GATK_BaseRecalibrator, GATK_BQSR, GATK_HaplotypeCaller and GATK_Mutect2
 
