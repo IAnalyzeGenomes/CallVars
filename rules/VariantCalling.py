@@ -33,7 +33,7 @@ rule GATK_Mutect2:
         gnomAD = expand("{REF}", REF=config["GNOMAD_Database"])
     shell:
         """
-        gatk --java-options '{params.mem}' Mutect2 -R {params.REF} -I {input.BAM} -L {params.TARGET} -tumor {wildcards.sample} --germline-resource {params.gnomAD} -O {output} &>{log}
+        gatk --java-options '{params.mem}' Mutect2 -R {params.REF} -I {input} -L {params.TARGET} -tumor {wildcards.sample} --germline-resource {params.gnomAD} -O {output} &>{log}
         #rm CallVars/TrimmedReads/{wildcards.sample}_Trimmed_R1.fastq.gz CallVars/TrimmedReads/{wildcards.sample}_Trimmed_R2.fastq.gz
         #rm CallVars/MappedReads/{wildcards.sample}.bam CallVars/SortedReads/{wildcards.sample}.bam CallVars/NoDupReads/{wildcards.sample}.bam
         """
