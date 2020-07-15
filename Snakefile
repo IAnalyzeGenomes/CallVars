@@ -4,12 +4,14 @@ configfile: "config.yaml"
 rule all:
 	input:
 		FINAL1=expand("CallVars/Reports/{sample}_Somatic.txt", sample=config["SAMPLE"]),
-		FINAL2=expand("CallVars/Reports/{sample}_Germline.txt", sample=config["SAMPLE"])
-
+		FINAL2=expand("CallVars/Reports/{sample}_Germline.txt", sample=config["SAMPLE"]),
+		FINAL3=expand("CallVars/Reports/{sample}_samtools.vcf", sample=config["SAMPLE"])
+        
 #Modules
 include: "rules/AdapterTrim.py"
 include: "rules/Mapping.py"
 include: "rules/BamPrep.py"
+include: "rules/SamtoolsVC.py"
 include: "rules/BQSR.py"
 include: "rules/PerBaseCov.py"
 include: "rules/VariantCalling.py"
