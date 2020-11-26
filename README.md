@@ -1,25 +1,130 @@
 # <ins>CallVars:</ins> 
 
-CallVars is an automated, reproducible and scalable Snakemake workflow that takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants. 
+**CallVars is an automated, reproducible and scalable Snakemake workflow that takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants.** 
 
-CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels for four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, in a panel of 64 cancer genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
+**CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome. The description below id pertaining to hg19.**
+
+## <ins>Benchmarking:</ins> 
+CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels in four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, for a targeted panel of 64 cancer specific genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
 		
 	ALK, APC, ATM, AXIN2, BAP1, BARD1, BMPR1A, BRCA1, BRCA2, BRIP1, CDC73, CDH1, CDK4, CDKN1C, CDKN2A, CHEK2,
 	DICER1, EPCAM, FANCC, FH, FLCN, GPC3, GREM1, HOXB13, MAX, MEN1, MET, MITF, MLH1, MSH2, MSH6, MUTYH, NBN, 
 	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
 	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
 
-CallVars can be helpful to anyone working with targeted gene panels or whole exomes to detect disease causing/associated variants that can potentially help with diagnosis/treatment. Check out the Callvars workflow section below for more details. 
 
-If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
-**Note that CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome.**
+CallVars can be helpful to anyone working with targeted gene panels or even whole exomes to detect disease causing/associated variants that can potentially help clinicians with a diagnosis/treatment. If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
+
+
+## <ins>Setting up a CallVars working directory:</ins>
+All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
+
+	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
+	- "CallVars.yml" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
+	- "Snakefile" (Attached in repo. This file is needed while running CallVars.)
+	- "config.yaml" (Attached in repo, this file lists samples and parameter values. You may adjust these per your need.)
+	- "Target.bed" (Attached in repo. This file can be replaced by your target file of interest in BED format)
+	- "gatkPythonPackageArchive.zip" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
+	
+
+You will need to download each of the below listed files from their respective public repositories. I have provided links to these resources.
+
+	- "1000G_phase1.indels.hg19.sites.vcf"
+	- "1000G_phase1.indels.hg19.sites.vcf.idx"
+	- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+	- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx"
+	These 1000 genome indel files can be downloaded using below link.
+	ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/
+	
+	- "dbSNP_20180423.vcf"
+	- "dbSNP_20180423.vcf.idx"
+	These dbSNP files can be downloaded usibg below link.
+	ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/
+	
+	- "GNOMAD_hg19.vcf"
+	- "GNOMAD_hg19.vcf.idx"
+	These gnomAD files can be downloaded using below link.
+	http://hgdownload.cse.ucsc.edu/gbdb/hg19/gnomAD/vcf/
+	
+	- HG19 Reference Genome Folder ‘UCSCWholeGenomeFasta’ containing files
+  	"genome.dict"
+	"genome.fa"
+	"genome.fa.amb" 
+	"genome.fa.ann"
+	"genome.fa.bwt"
+	"genome.fa.fai"
+	"genome.fa.pac"
+	"genome.fa.sa"
+	"GenomeSize.xml"
+	The reference genome files can be downloaded in 2bit format using below link.
+	http://hgdownload.cse.ucsc.edu/gbdb/hg19/
+	The utility program, twoBitToFa (available from the kent src tree), can be used to extract .fa file(s) from this file.  
+	A pre-compiled version of the command line tool can be found at: http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
+	Converting 2bit to fa --> ./twoBitToFa hg19.2bit hg19.fa
+	renaming --> mv hg19.fa genome.fa
+	indexing .fa file --> bwa index genome.fa
+	Creating .dict file --> gatk CreateSequenceDictionary –R genome.fa
+
+	
+	- dataSourcesFolder containing below data source. 
+	Genecode, Clinvar, Gnomad
+	Data source was downloaded using below link.
+	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
+
+# <ins>Installing and Running CallVars on Linux CLI:</ins> 
+## 1)	Check the working directory and FastQ files: 
+
+In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
+Make sure your fastq files are in a ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. The pipeline also works with gzipped fastq files, say A_R1.fastq.gz and A_R2.fastq.gz.
+
+## 2)	Install miniconda: 
+
+Use below link to install miniconda.
+
+https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
+
+## 3)	Install snakemake using conda:
+	
+		conda install -c bioconda -c conda-forge snakemake
+
+## 4)	Create environment CallVars using conda:
+	
+		conda env create –n CallVars –f CallVars.yml
+
+## 5)	Activate CallVars environment using conda:
+
+		conda activate CallVars
+
+## 6)	Running CallVars: 
+Ensure you run the below command's in the working directory.
+
+Use below command on CLI for a dry run:
+		
+		snakemake -np
+Fix errors, if any, during the dry run. 
+		
+Use below command on CLI to execute the workflow:
+		
+		snakemake
+		
+Use below command on CLI if your machine supports multiple CPU cores:
+		
+		snakemake --cores N
+
+After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples then you will see these files for all your samples.
+
+	1] CallVars/Reports/A_Germline.txt containing a filtered list of germline variants.
+	2] CallVars/Reports/A_Somatic.txt containing a filtered list of somatic variants.
+	3] CallVars/Reports/A_Germline_All.vcf containing a full list of germline variants.
+	4] CallVars/Reports/A_Somatic_All.vcf containing a full list of somatic variants.
+
+CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 
 # <ins>CallVars Workflow:</ins>
 
 ![](CallVarsWorkflowEngine.PNG)
 
-CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 
 ## 1) Pre-processing using Cutadapt
 
@@ -84,111 +189,6 @@ CallVars currently uses gnomAD allele frequency as a key filter to report varian
 ## 12) Variant filtration for somatic variants using GATK VariantFiltration 
 	
 This step performs filtering as discussed in step 11 for Somatic variants.
-
-# <ins>Setting up a working directory to run CallVars:</ins>
-All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
-
-	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
-	- "CallVars.yml" (Attached in repo)
-	- "Snakefile" (Attached in repo)
-	- "config.yaml" (Attached in repo)
-	- "Target.bed" (Attached in repo. This file contains below listed 64 cancer genes. This file can be replaced by your target file in BED format)
-	ALK, APC, ATM, AXIN2, BAP1, BARD1, BMPR1A, BRCA1, BRCA2, BRIP1, CDC73, CDH1, CDK4, CDKN1C, CDKN2A, CHEK2,
-	DICER1, EPCAM, FANCC, FH, FLCN, GPC3, GREM1, HOXB13, MAX, MEN1, MET, MITF, MLH1, MSH2, MSH6, MUTYH, NBN, 
-	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
-	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
-	
-
-You will need to download each of the below listed files from their respective public repositories. I have provided links to these resources.
-
-	- "1000G_phase1.indels.hg19.sites.vcf"
-	- "1000G_phase1.indels.hg19.sites.vcf.idx"
-	- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
-	- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx"
-	These 1000 genome indel files can be downloaded using below link.
-	ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/
-	
-	- "dbSNP_20180423.vcf"
-	- "dbSNP_20180423.vcf.idx"
-	These dbSNP files can be downloaded usibg below link.
-	ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/
-	
-	- "GNOMAD_hg19.vcf"
-	- "GNOMAD_hg19.vcf.idx"
-	These gnomAD files can be downloaded using below link.
-	http://hgdownload.cse.ucsc.edu/gbdb/hg19/gnomAD/vcf/
-	
-	- HG19 Reference Genome Folder ‘UCSCWholeGenomeFasta’ containing files
-  	"genome.dict"
-	"genome.fa"
-	"genome.fa.amb" 
-	"genome.fa.ann"
-	"genome.fa.bwt"
-	"genome.fa.fai"
-	"genome.fa.pac"
-	"genome.fa.sa"
-	"GenomeSize.xml"
-	The reference genome files can be downloaded in 2bit format using below link.
-	http://hgdownload.cse.ucsc.edu/gbdb/hg19/
-	The utility program, twoBitToFa (available from the kent src tree), can be used to extract .fa file(s) from this file.  
-	A pre-compiled version of the command line tool can be found at: http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
-	Converting 2bit to fa --> ./twoBitToFa hg19.2bit hg19.fa
-	renaming --> mv hg19.fa genome.fa
-	indexing .fa file --> bwa index genome.fa
-	Creating .dict file --> gatk CreateSequenceDictionary –R genome.fa
-
-	
-	- dataSourcesFolder containing below data source. 
-	Genecode, Clinvar, Gnomad
-	Data source was downloaded using below link.
-	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
-
-# <ins>Installing and Running CallVars on Linux Command Line Interface (CLI):</ins> 
-## 1)	Check the working directory and FastQ files: 
-
-In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
-Make sure your fastq files are in a ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. The pipeline also works with gzipped fastq files, say A_R1.fastq.gz and A_R2.fastq.gz.
-
-## 2)	Install miniconda: 
-
-Use below link to install miniconda.
-
-https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
-
-## 3)	Install snakemake using conda:
-	
-		conda install -c bioconda -c conda-forge snakemake
-
-## 4)	Create environment CallVars using conda:
-	
-		conda env create –n CallVars –f CallVars.yml
-
-## 5)	Activate CallVars environment using conda:
-
-		conda activate CallVars
-
-## 6)	Running CallVars: 
-Ensure you run the below command's in the working directory.
-
-Use below command on CLI for a dry run:
-		
-		snakemake -np
-Fix errors, if any, during the dry run. 
-		
-Use below command on CLI to execute the workflow:
-		
-		snakemake
-		
-Use below command on CLI if your machine supports multiple CPU cores:
-		
-		snakemake --cores N
-
-After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples then you will see these files for all your samples.
-
-	1] CallVars/Reports/A_Germline.txt containing a filtered list of germline variants.
-	2] CallVars/Reports/A_Somatic.txt containing a filtered list of somatic variants.
-	3] CallVars/Reports/A_Germline_All.vcf containing a full list of germline variants.
-	4] CallVars/Reports/A_Somatic_All.vcf containing a full list of somatic variants.
 
 # <ins>Author:</ins>
 [Amit Rupani](https://twitter.com/IAnalyzeGenomes) 
