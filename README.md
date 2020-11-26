@@ -109,15 +109,15 @@ Use below command on CLI if your machine supports multiple CPU cores:
 		
 		snakemake --cores N
 
-After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples then you will see these files for all your samples.
+After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples, then you will see these files for all your samples.
 
-	1] CallVars/Reports/A_Germline.txt containing a filtered list of germline variants.
-	2] CallVars/Reports/A_Somatic.txt containing a filtered list of somatic variants.
-	3] CallVars/Reports/A_Germline_All.vcf containing a full list of germline variants.
-	4] CallVars/Reports/A_Somatic_All.vcf containing a full list of somatic variants.
-	5] CallVars/BQSR/A_PerBaseCov.txt containing coverage for each base.
-	6] CallVars/BQSR/A_PerBaseCov_LessThan20.txt containing bases for which coverage is less than 20.
-	7] CallVars/Reports/A_samtools.vcf containing a full list variants from samtools mpileup.
+	1] CallVars/Reports/A_Germline.txt contains a filtered list of germline variants.
+	2] CallVars/Reports/A_Somatic.txt contains a filtered list of somatic variants.
+	3] CallVars/Reports/A_Germline_All.vcf contains a full list of germline variants.
+	4] CallVars/Reports/A_Somatic_All.vcf contains a full list of somatic variants.
+	5] CallVars/BQSR/A_PerBaseCov.txt contains coverage for each base.
+	6] CallVars/BQSR/A_PerBaseCov_LessThan20.txt contains bases for which coverage is less than 20.
+	7] CallVars/Reports/A_samtools.vcf contains a full list variants from samtools mpileup.
 
 # <ins>CallVars Workflow:</ins>
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
