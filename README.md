@@ -2,7 +2,9 @@
 
 **CallVars is an automated, reproducible and scalable Snakemake workflow that takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants.** 
 
-**CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome. The description below id pertaining to hg19.**
+**CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome. The description below is pertaining to hg19.**
+
+CallVars can be helpful to anyone working with targeted gene panels or even whole exomes to detect disease causing/associated variants that can potentially help clinicians with a diagnosis/treatment. If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
 ## <ins>Benchmarking:</ins> 
 CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels in four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, for a targeted panel of 64 cancer specific genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
@@ -11,10 +13,6 @@ CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Ind
 	DICER1, EPCAM, FANCC, FH, FLCN, GPC3, GREM1, HOXB13, MAX, MEN1, MET, MITF, MLH1, MSH2, MSH6, MUTYH, NBN, 
 	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
 	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
-
-
-
-CallVars can be helpful to anyone working with targeted gene panels or even whole exomes to detect disease causing/associated variants that can potentially help clinicians with a diagnosis/treatment. If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
 
 
 ## <ins>Setting up a CallVars working directory:</ins>
@@ -72,37 +70,37 @@ You will need to download each of the below listed files from their respective p
 	Data source was downloaded using below link.
 	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 
-# <ins>Installing and Running CallVars on Linux CLI:</ins> 
-## 1)	Check the working directory and FastQ files: 
+## <ins>Installing and Running CallVars on Linux CLI:</ins> 
+#### 1)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
 Make sure your fastq files are in a ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. The pipeline also works with gzipped fastq files, say A_R1.fastq.gz and A_R2.fastq.gz.
 
-## 2)	Install miniconda: 
+#### 2)	Install miniconda: 
 
 Use below link to install miniconda.
 
 https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
-## 3)	Install snakemake using conda:
+#### 3)	Install snakemake using conda:
 	
 		conda install -c bioconda -c conda-forge snakemake
 
-## 4)	Create environment CallVars using conda:
+#### 4)	Create environment CallVars using conda:
 	
 		conda env create –n CallVars –f CallVars.yml
 
-## 5)	Activate CallVars environment using conda:
+#### 5)	Activate CallVars environment using conda:
 
 		conda activate CallVars
 
-## 6)	Running CallVars: 
+#### 6)	Running CallVars: 
 Ensure you run the below command's in the working directory.
 
 Use below command on CLI for a dry run:
 		
 		snakemake -np
-Fix errors, if any, during the dry run. 
+
 		
 Use below command on CLI to execute the workflow:
 		
@@ -118,6 +116,9 @@ After the worklow has run successfully, below listed files will be available for
 	2] CallVars/Reports/A_Somatic.txt containing a filtered list of somatic variants.
 	3] CallVars/Reports/A_Germline_All.vcf containing a full list of germline variants.
 	4] CallVars/Reports/A_Somatic_All.vcf containing a full list of somatic variants.
+	5] CallVars/BQSR/A_PerBaseCov.txt containing coverage for each base.
+	6] CallVars/BQSR/A_PerBaseCov_LessThan20.txt containing bases for which coverage is less than 20.
+	7] CallVars/Reports/A_samtools.vcf containing a full list variants from samtools mpileup.
 
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 
