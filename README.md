@@ -179,7 +179,7 @@ https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotato
 	
 This step performs functional annotation as discussed in step 9 for somatic variants.
 
-## 11) Variant filtration for germline variants using GATK VariantFiltration
+### 11) Variant filtration for germline variants using GATK VariantFiltration
 	
 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
 CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 1% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
