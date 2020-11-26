@@ -1,6 +1,5 @@
-# Conda environment for GATK Python Tools
-#
-#name: gatk
+# Conda environment for CallVars
+
 channels:
 - defaults
 - conda-forge
