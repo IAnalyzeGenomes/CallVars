@@ -41,7 +41,7 @@ rule GATK_VariantFiltration_Germline:
 					echo "The reference genome is HG38"
 					gatk --java-options '{params.mem}' VariantFiltration -R {params.REF} -O {output.FILTER} -V {input} --filter-expression \"(QD < {params.QD_Filter}) || (FS > {params.FS_Filter}) || (MQ < {params.MQ_Filter}) || (MQRankSum < {params.MQRankSum_Filter}) || (ReadPosRankSum < {params.ReadPosRankSum_Filter}) || (SOR > {params.SOR_Filter})\" --filter-name \"Fail\" &>{log}
 					cat {output.FILTER}| cut -f1-7 | tail -n +{params.CutGermline} > {output.ONE} || true
-					cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION="  '{{ print $2 }}'  | awk -F"|" '{{ print $1"\t"$6"\t"$8"\t"$12"\t"$14"\t"$17"\t"$27"\t"$29"\t"$31"\t"$32"\t"$33"\t"$34"\t"$43"\t"$47*100"\t"$87*100}}' | tail -n +{params.CutGermline} > {output.TWO} ||true
+					cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION="  '{{ print $2 }}'  | awk -F"|" '{{ print substr($1,2)"\t"$6"\t"$8"\t"$12"\t"$14"\t"$17"\t"$27"\t"$29"\t"$31"\t"$32"\t"$33"\t"$34"\t"$43"\t"$47*100"\t"$87*100}}' | tail -n +{params.CutGermline} > {output.TWO} ||true
 					cat {output.FILTER}| cut -f9,10 | tail -n +{params.CutGermline}  > {output.THREE} || true
 					paste {output.ONE} {output.TWO} {output.THREE} > {output.FINALTEMP} || true
 					awk -F"\\t" '{{ if ($21 <= {params.gnomAD_Filter} || $22 <= {params.gnomAD_Filter}) {{print}}}}' {output.FINALTEMP} > {output.FINAL} || true
@@ -51,7 +51,7 @@ rule GATK_VariantFiltration_Germline:
 					echo "The reference genome is HG19"
 					gatk --java-options '{params.mem}' VariantFiltration -R {params.REF} -O {output.FILTER} -V {input} --filter-expression \"(QD < {params.QD_Filter}) || (FS > {params.FS_Filter}) || (MQ < {params.MQ_Filter}) || (MQRankSum < {params.MQRankSum_Filter}) || (ReadPosRankSum < {params.ReadPosRankSum_Filter}) || (SOR > {params.SOR_Filter})\" --filter-name \"Fail\" &>{log}
 					cat {output.FILTER}| cut -f1-7 | tail -n +{params.CutGermline} > {output.ONE} || true
-					cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION="  '{{ print $2 }}'  | awk -F"|" '{{ print $1"\t"$6"\t"$8"\t"$12"\t"$14"\t"$17"\t"$27"\t"$29"\t"$31"\t"$32"\t"$33"\t"$34"\t"$43"\t"$47*100"\t"$87*100}}' | tail -n +{params.CutGermline} > {output.TWO} ||true
+					cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION="  '{{ print $2 }}'  | awk -F"|" '{{ print substr($1,2)"\t"$6"\t"$8"\t"$12"\t"$14"\t"$17"\t"$27"\t"$29"\t"$31"\t"$32"\t"$33"\t"$34"\t"$43"\t"$47*100"\t"$87*100}}' | tail -n +{params.CutGermline} > {output.TWO} ||true
 					cat {output.FILTER}| cut -f9,10 | tail -n +{params.CutGermline}  > {output.THREE} || true
 					paste {output.ONE} {output.TWO} {output.THREE} > {output.FINALTEMP} || true
 					awk -F"\\t" '{{ if ($21 <= {params.gnomAD_Filter} || $22 <= {params.gnomAD_Filter}) {{print}}}}' {output.FINALTEMP} > {output.FINAL} || true
@@ -100,7 +100,7 @@ rule GATK_VariantFiltration_Somatic:
 					echo "The reference genome is HG38"
 					gatk --java-options '{params.mem}' VariantFiltration -R {params.REF} -O {output.FILTER} -V {input} --filter-expression \"(QD < {params.QD_Filter}) || (FS > {params.FS_Filter}) || (MQ < {params.MQ_Filter}) || (MQRankSum < {params.MQRankSum_Filter}) || (ReadPosRankSum < {params.ReadPosRankSum_Filter}) || (SOR > {params.SOR_Filter})\" --filter-name \"Fail\" &>{log}
 					cat {output.FILTER}| cut -f1-7 | tail -n +{params.CutSomatic} > {output.ONE} || true
-					cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION="  '{{ print $2 }}'  | awk -F"|" '{{ print $1"\t"$6"\t"$8"\t"$12"\t"$14"\t"$17"\t"$27"\t"$29"\t"$31"\t"$32"\t"$33"\t"$34"\t"$43"\t"$47*100"\t"$87*100}}' | tail -n +{params.CutSomatic} > {output.TWO} ||true
+					cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION="  '{{ print $2 }}'  | awk -F"|" '{{ print substr($1,2)"\t"$6"\t"$8"\t"$12"\t"$14"\t"$17"\t"$27"\t"$29"\t"$31"\t"$32"\t"$33"\t"$34"\t"$43"\t"$47*100"\t"$87*100}}' | tail -n +{params.CutSomatic} > {output.TWO} ||true
 					cat {output.FILTER}| cut -f9,10 | tail -n +{params.CutSomatic} > {output.THREE} || true
 					paste {output.ONE} {output.TWO} {output.THREE} > {output.FINALTEMP} || true
 					awk -F"\\t" '{{ if ($21 <= {params.gnomAD_Filter} || $22 <= {params.gnomAD_Filter}) {{print}}}}' {output.FINALTEMP} > {output.FINAL} || true
@@ -110,7 +110,7 @@ rule GATK_VariantFiltration_Somatic:
 					echo "The reference genome is HG19"
 					gatk --java-options '{params.mem}' VariantFiltration -R {params.REF} -O {output.FILTER} -V {input} --filter-expression \"(QD < {params.QD_Filter}) || (FS > {params.FS_Filter}) || (MQ < {params.MQ_Filter}) || (MQRankSum < {params.MQRankSum_Filter}) || (ReadPosRankSum < {params.ReadPosRankSum_Filter}) || (SOR > {params.SOR_Filter})\" --filter-name \"Fail\" &>{log}
 					cat {output.FILTER}| cut -f1-7 | tail -n +{params.CutSomatic} > {output.ONE} || true
-					cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION="  '{{ print $2 }}'  | awk -F"|" '{{ print $1"\t"$6"\t"$8"\t"$12"\t"$14"\t"$17"\t"$27"\t"$29"\t"$31"\t"$32"\t"$33"\t"$34"\t"$43"\t"$47*100"\t"$87*100}}' | tail -n +{params.CutSomatic} > {output.TWO} ||true
+					cat {output.FILTER}| cut -f8 | awk -F"FUNCOTATION="  '{{ print $2 }}'  | awk -F"|" '{{ print substr($1,2)"\t"$6"\t"$8"\t"$12"\t"$14"\t"$17"\t"$27"\t"$29"\t"$31"\t"$32"\t"$33"\t"$34"\t"$43"\t"$47*100"\t"$87*100}}' | tail -n +{params.CutSomatic} > {output.TWO} ||true
 					cat {output.FILTER}| cut -f9,10 | tail -n +{params.CutSomatic} > {output.THREE} || true
 					paste {output.ONE} {output.TWO} {output.THREE} > {output.FINALTEMP} || true
 					awk -F"\\t" '{{ if ($21 <= {params.gnomAD_Filter} || $22 <= {params.gnomAD_Filter}) {{print}}}}' {output.FINALTEMP} > {output.FINAL} || true
