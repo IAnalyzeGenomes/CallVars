@@ -20,9 +20,9 @@ All the below listed files/folders must be present in the working directory befo
 
 	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
 	- "CallVars.yml" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
-	- "Snakefile" (Attached in repo. This file is needed while running CallVars.)
+	- "Snakefile" (Attached in repo, this file is needed for running CallVars.)
 	- "config.yaml" (Attached in repo, this file lists samples and workflow parameter values. You may adjust these per your need.)
-	- "Target.bed" (Attached in repo. This file can be replaced by your target file of interest in BED format)
+	- "Target.bed" (Attached in repo, this file can be replaced by your target file of interest in BED format.)
 	- "gatkPythonPackageArchive.zip" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
 	
 You will need to download each of the below listed files from their respective public repositories. I have provided links to these resources (I would ideally like to have a bash script that will take care of all the below steps - hopefully soon!).
