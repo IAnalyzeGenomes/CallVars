@@ -166,3 +166,9 @@ https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotato
 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
 CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 1% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
 
+### 9) Variant filtration for germline variants using GATK VariantFiltration
+
+	rules/PerBaseCov.py (attached in repo)
+
+CallVars uses bedtools coverage utility to report per base coverage for the targeted file you provided in BED format. It also reports bases with coverage less than 20 to review regions of low coverage.
+
