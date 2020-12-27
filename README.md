@@ -78,13 +78,17 @@ Use below command on CLI if your machine supports multiple CPU cores:
 		
 		snakemake --cores N
 
-After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples, then you will see these files for all your samples.
+**After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples, then you will see these files for all your samples.**
 
-	1] CallVars/Reports/A_Germline.txt contains a filtered list of germline variants from GATK HaplotypeCaller.
-	2] CallVars/Reports/A_Germline_All.vcf contains a complete list of germline variants from GATK HaplotypeCaller.
-	3] CallVars/Reports/A_samtools.vcf contains a full list variants from samtools mpileup.
-	4] CallVars/NoDupReads/A_PerBaseCov.txt contains coverage for each base.
-	5] CallVars/NoDupReads/A_PerBaseCov_LessThan20.txt contains bases for which coverage is less than 20.
+**1] CallVars/Reports/A_Germline.txt contains a filtered list of germline variants from GATK HaplotypeCaller.**
+
+**2] CallVars/Reports/A_Germline_All.vcf contains a complete list of germline variants from GATK HaplotypeCaller.**
+
+**3] CallVars/Reports/A_samtools.vcf contains a full list variants from samtools mpileup.**
+
+**4] CallVars/NoDupReads/A_PerBaseCov.txt contains coverage for each base.**
+
+**5] CallVars/NoDupReads/A_PerBaseCov_LessThan20.txt contains bases for which coverage is less than 20.**
 	
 ## Benchmarking:
 CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels in four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, for a targeted panel of 64 cancer specific genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
