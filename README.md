@@ -102,6 +102,8 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 
 ### 1) Pre-processing using Cutadapt
 
+rules/AdapterTrim.py (attached in repo)
+
 Pre-processing prepares the data for NGS analysis. When DNA or RNA molecules are sequenced using Illumina short reads technology, the machine may sequence into the adapter ligated to the 3’ end of each molecule during library preparation. Consequently, the reads that are output contain the sequence of the molecule of interest and also the adapter sequence. Also, with Illumina sequencing machines, the quality of reads is high at the beginning but degrades towards the 3’ end of the reads. 
 	
 CallVars uses Cutadapt to remove adapters from sequencing reads. Cutadapt also trims the read ends with quality below 20 and removes the ambiguous bases (N’s) from the reads ends. 
@@ -109,7 +111,9 @@ CallVars uses Cutadapt to remove adapters from sequencing reads. Cutadapt also t
 The adapters to be trimmed and threshold for quality values can be customized using the config.yaml file attached in this repository. 
 
 ### 2) Mapping using BWA
-	
+
+rules/Mapping.py (attached in repo)
+
 Once the high quality reads are obtained from pre-processing, the next step is mapping them to human reference genome. CallVars uses BWA-mem to map short Illumina paired-end reads to hg19/hg38 version of human reference genome. The reference genome to be used can be configured using the config.yaml file attached in the repo. 
 
 This step generate a Binary Alignment Map also called a BAM file. The reference genome files needed for the analysis were downloaded in 2bit format using below link.
@@ -117,23 +121,33 @@ This step generate a Binary Alignment Map also called a BAM file. The reference 
 http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 
 ### 3) Sorting using samtools
-	
+
+rules/BamPrep.py (attached in repo)
+
 Now that we have a BAM file, we need to index it. All BAM files need an index, as they tend to be large and the index allows us to perform computationally complex operations on these files without it taking days to complete. Before we index the BAM file we need to sort them by position and remove duplicates. This step performs sorting the BAM file by position.
 	
 ### 4) Removing duplicates using GATK MarkDuplicates
-	
+
+rules/BamPrep.py (attached in repo)
+
 CallVars uses this tool to locate and remove duplicate reads in a BAM file, where duplicate reads are defined as originating from a single fragment of DNA. Duplicates can arise during sample preparation e.g. library construction using PCR. The MarkDuplicates tool works by comparing sequences in the 5 prime positions of read-pairs in a BAM file.
 	
 ### 5) Indexing using samtools
-	
+
+rules/BamPrep.py (attached in repo)
+
 CallVars now perform indexing discussed in step 3 using samtools. 
 	
 ### 6) Germline variant detection using GATK HaplotypeCaller
 
+rules/HaplotypeCaller.py (attached in repo)
+
 CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper. 
 
 ### 7) Functional annotation for germline variants using GATK Funcotator
-	
+
+rules/Funcotator.py (attached in repo)
+
 CallVars uses GATK Funcotator (FUNCtional annOTATOR) to analyze given variants for their function (as retrieved from a set of data sources) and produces the analysis in a specified output file. This tool is a functional annotation tool that allows a user to add annotations to called variants based on a set of data sources, each with its own matching criteria.
 	
 Data from Genecode, Clinvar and Gnomad were used for annotation of variants. Data source was downloaded using below link.
@@ -142,7 +156,9 @@ https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotato
 	
 
 ### 8) Variant filtration for germline variants using GATK VariantFiltration
-	
+
+rules/VariantFiltration.py (attached in repo)
+
 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
 CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 1% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
 
