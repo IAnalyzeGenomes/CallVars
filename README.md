@@ -124,42 +124,39 @@ This step generate a Binary Alignment Map also called a BAM file. The reference 
 	
 http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 
-### 3) Sorting using samtools
-
+### 3) BAM Preparation
+	
 	rules/BamPrep.py (attached in repo)
-
+	
+#### 3A - Sorting using samtools**
 Now that we have a BAM file, we need to index it. All BAM files need an index, as they tend to be large and the index allows us to perform computationally complex operations on these files without it taking days to complete. Before we index the BAM file we need to sort them by position and remove duplicates. This step performs sorting the BAM file by position.
 	
-### 4) Removing duplicates using GATK MarkDuplicates
-
-	rules/BamPrep.py (attached in repo)
-
+#### 3B - Removing duplicates using GATK MarkDuplicates**
 CallVars uses this tool to locate and remove duplicate reads in a BAM file, where duplicate reads are defined as originating from a single fragment of DNA. Duplicates can arise during sample preparation e.g. library construction using PCR. The MarkDuplicates tool works by comparing sequences in the 5 prime positions of read-pairs in a BAM file.
 	
-### 5) Indexing using samtools
+#### 3C - Indexing using samtools**
+CallVars now performs indexing. 
 
-	rules/BamPrep.py (attached in repo)
-
-CallVars now perform indexing discussed in step 3 using samtools. 
-
-### 6) 	Variant calling using samtools
+### 4) 	Variant calling using samtools
+	
 	rules/SamtoolsVC.py
+
 CallVars reports a list of variants from samtools mpileup and bcftools. Samtools collects summary information in the input BAMs, computes the likelihood of data given each possible genotype and stores the likelihoods in the BCF format (see below). It does not call variants.Bcftools applies the prior and does the actual calling. It can also concatenate BCF files, index BCFs for fast random access and convert BCF to VCF. 
 
-### 7) 	Coverage analysis using bedtools
+### 5) 	Coverage analysis using bedtools
 
 	rules/PerBaseCov.py (attached in repo)
 
 CallVars uses bedtools coverage utility to report per base coverage for the targeted file you provided in BED format. 
 It also reports bases with coverage less than 20 to review regions of low coverage.
 
-### 8) Germline variant detection using GATK HaplotypeCaller
+### 6) Germline variant detection using GATK HaplotypeCaller
 
 	rules/HaplotypeCaller.py (attached in repo)
 
 CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper. 
 
-### 9) Functional annotation using GATK Funcotator
+### 7) Functional annotation using GATK Funcotator
 
 	rules/Funcotator.py (attached in repo)
 
@@ -170,7 +167,7 @@ Data from Genecode, Clinvar and Gnomad were used for annotation of variants. Dat
 https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 	
 
-### 10) Variant filtration using GATK VariantFiltration
+### 8) Variant filtration using GATK VariantFiltration
 
 	rules/VariantFiltration.py (attached in repo)
 
