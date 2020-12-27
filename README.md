@@ -47,25 +47,15 @@ The above bash script can take a few hours to run as it will download below file
 		- genome.fa.sa
 		- GenomeSize.xml
 
-#### 3)	Install miniconda: 
-
-Use below link to install miniconda.
-
-https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
-
-#### 4)	Install snakemake using conda:
-	
-		conda install -c bioconda -c conda-forge snakemake
-
-#### 5)	Create environment CallVars using conda:
+#### 3)	Create environment CallVars using conda:
 	
 		conda env create –n CallVars –f CallVars.yml
 
-#### 6)	Activate CallVars environment using conda:
+#### 4)	Activate CallVars environment using conda:
 
 		conda activate CallVars
 
-#### 7)	Running CallVars: 
+#### 5)	Running CallVars: 
 Ensure you run the below command's in the working directory.
 
 Use below command on CLI for a dry run:
