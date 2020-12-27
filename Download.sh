@@ -11,8 +11,6 @@ gatk CreateSequenceDictionary -R genome.fa
 
 # Downloading and getting dbSNP files ready 
 wget -nc ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/All_20180423.vcf.gz
-gunzip -c All_20180423.vcf.gz > All_20180423.vcf
-cat All_20180423.vcf | parallel --pipe sed '/^#/!s/^/chr/' > dbSNP_hg19.vcf
-rm All_20180423.vcf
+zcat All_20180423.vcf.gz | parallel --pipe sed '/^#/!s/^/chr/' > dbSNP_hg19.vcf
 rm All_20180423.vcf.gz
 gatk IndexFeatureFile -F dbSNP_hg19.vcf
