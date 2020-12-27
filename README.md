@@ -7,7 +7,7 @@ CallVars can be helpful to anyone working with targeted gene panels or even whol
 CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome. The description below is pertaining to hg19.
 
 ## Setting up a CallVars working directory:
-All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
+Pull this repo and make sure all the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
 
 	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
 	- "CallVars.yml" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
@@ -15,9 +15,11 @@ All the below listed files/folders must be present in the working directory befo
 	- "config.yaml" (Attached in repo, this file lists samples and workflow parameter values. You may adjust these per your need.)
 	- "Target.bed" (Attached in repo, this file can be replaced by your target file of interest in BED format.)
 	- "gatkPythonPackageArchive.zip" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
-	- "dataSourcesFolderHG19" containing below data sources. 
+
+**You will need to separately download below directory. A google account will be required.**
+	- "dataSourcesFolder" containing below data sources. 
 			Genecode, Clinvar, Gnomad
-	  These data sources can be downloaded using below link (a google account will be required).
+	  These data sources can be downloaded using below link.
 	  https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 
 ## Installing and running CallVars on linux Command Line Interface (CLI):
@@ -89,14 +91,6 @@ Use below command on CLI if your machine supports multiple CPU cores:
 **4] CallVars/NoDupReads/A_PerBaseCov.txt** contains coverage for each base.
 
 **5] CallVars/NoDupReads/A_PerBaseCov_LessThan20.txt** contains bases for which coverage is less than 20.
-	
-## Benchmarking:
-CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels in four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, for a targeted panel of 64 cancer specific genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
-		
-	ALK, APC, ATM, AXIN2, BAP1, BARD1, BMPR1A, BRCA1, BRCA2, BRIP1, CDC73, CDH1, CDK4, CDKN1C, CDKN2A, CHEK2,
-	DICER1, EPCAM, FANCC, FH, FLCN, GPC3, GREM1, HOXB13, MAX, MEN1, MET, MITF, MLH1, MSH2, MSH6, MUTYH, NBN, 
-	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
-	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
 
 
 # CallVars Workflow:
@@ -116,7 +110,7 @@ The adapters to be trimmed and threshold for quality values can be customized us
 
 ### 2) Mapping using BWA
 
-	rules/Mapping.py (attached in repo)
+	rules/Mapping.py 
 
 Once the high quality reads are obtained from pre-processing, the next step is mapping them to human reference genome. CallVars uses BWA-mem to map short Illumina paired-end reads to hg19/hg38 version of human reference genome. The reference genome to be used can be configured using the config.yaml file attached in the repo. 
 
@@ -126,7 +120,7 @@ http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 
 ### 3) BAM Preparation
 	
-	rules/BamPrep.py (attached in repo)
+	rules/BamPrep.py 
 	
 #### 	3A - Sorting using samtools
 Now that we have a BAM file, we need to index it. All BAM files need an index, as they tend to be large and the index allows us to perform computationally complex operations on these files without it taking days to complete. Before we index the BAM file we need to sort them by position and remove duplicates. This step performs sorting the BAM file by position.
@@ -145,20 +139,20 @@ CallVars reports a list of variants from samtools mpileup and bcftools. Samtools
 
 ### 5) 	Coverage analysis using bedtools
 
-	rules/PerBaseCov.py (attached in repo)
+	rules/PerBaseCov.py 
 
 CallVars uses bedtools coverage utility to report per base coverage for the targeted file you provided in BED format. 
 It also reports bases with coverage less than 20 to review regions of low coverage.
 
 ### 6) Germline variant detection using GATK HaplotypeCaller
 
-	rules/HaplotypeCaller.py (attached in repo)
+	rules/HaplotypeCaller.py
 
 CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper. 
 
 ### 7) Functional annotation using GATK Funcotator
 
-	rules/Funcotator.py (attached in repo)
+	rules/Funcotator.py
 
 CallVars uses GATK Funcotator (FUNCtional annOTATOR) to analyze given variants for their function (as retrieved from a set of data sources) and produces the analysis in a specified output file. This tool is a functional annotation tool that allows a user to add annotations to called variants based on a set of data sources, each with its own matching criteria.
 	
@@ -169,10 +163,17 @@ https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotato
 
 ### 8) Variant filtration using GATK VariantFiltration
 
-	rules/VariantFiltration.py (attached in repo)
+	rules/VariantFiltration.py
 
 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
 CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 1% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
 
+## Benchmarking:
+CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels in four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, for a targeted panel of 64 cancer specific genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
+		
+	ALK, APC, ATM, AXIN2, BAP1, BARD1, BMPR1A, BRCA1, BRCA2, BRIP1, CDC73, CDH1, CDK4, CDKN1C, CDKN2A, CHEK2,
+	DICER1, EPCAM, FANCC, FH, FLCN, GPC3, GREM1, HOXB13, MAX, MEN1, MET, MITF, MLH1, MSH2, MSH6, MUTYH, NBN, 
+	NF1, NF2, PALB2, PHOX2B, PMS1, PMS2, POLD1, POLE, PRKAR1A, PTCH1, PTEN, RAD51C, RAD51D, RB1, RET, SDHA, 
+	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
 
 
