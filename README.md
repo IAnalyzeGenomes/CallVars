@@ -1,12 +1,12 @@
-# <ins>CallVars:</ins> 
+# CallVars:
 
 **CallVars is an automated, reproducible and scalable Snakemake workflow that takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. This workflow largely follows [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample and also reports a filtered list of somatic variants.** 
 
 **CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome. The description below is pertaining to hg19.**
 
-CallVars can be helpful to anyone working with targeted gene panels or even whole exomes to detect disease causing/associated variants that can potentially help clinicians with a diagnosis/treatment. If you think CallVars can help with your study, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
+CallVars can be helpful to anyone working with targeted gene panels or even whole exomes to detect disease causing/associated variants that can potentially help clinicians with a diagnosis/treatment. If you think CallVars can help with your study ar run into issues, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes) with any questions. CallVars is under development so any feedback for its improvement is much appreciated.
 
-## <ins>Setting up a CallVars working directory:</ins>
+## Setting up a CallVars working directory:
 All the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
 
 	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
@@ -20,10 +20,11 @@ All the below listed files/folders must be present in the working directory befo
 	  These data sources can be downloaded using below link (a google account will be required).
 	  https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 
-## <ins>Installing and Running CallVars on Linux CLI:</ins> 
+## Installing and Running CallVars on Linux CLI:
 
 #### 1) Running the download script Download.sh (attached in this repo)
 		sh Download.sh
+
 #### 2)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
@@ -71,7 +72,7 @@ After the worklow has run successfully, below listed files will be available for
 	4] CallVars/NoDupReads/A_PerBaseCov.txt contains coverage for each base.
 	5] CallVars/NoDupReads/A_PerBaseCov_LessThan20.txt contains bases for which coverage is less than 20.
 	
-## <ins>Benchmarking:</ins> 
+## Benchmarking:
 CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels in four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, for a targeted panel of 64 cancer specific genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
 		
 	ALK, APC, ATM, AXIN2, BAP1, BARD1, BMPR1A, BRCA1, BRCA2, BRIP1, CDC73, CDH1, CDK4, CDKN1C, CDKN2A, CHEK2,
@@ -80,7 +81,7 @@ CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Ind
 	SDHAF2, SDHB, SDHC, SDHD, SMAD4, SPRED1, STK11, SUFU, TMEM127, TP53, TSC1, TSC2, VHL, WT1 and XRCC2
 
 
-# <ins>CallVars Workflow:</ins>
+# CallVars Workflow:
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
 ![](CallVarsWorkflowEngine.PNG)
 
@@ -131,7 +132,7 @@ https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotato
 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
 CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 1% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
 
-# <ins>Author:</ins>
+# Author:
 [Amit Rupani](https://twitter.com/IAnalyzeGenomes) 
 
 If you think CallVars can help with your study, feel free to DM me on twitter [@IAnalyzeGenomes](https://twitter.com/IAnalyzeGenomes) with any questions. Feedback/comments/bug reports/contributions are welcome for its improvement.
