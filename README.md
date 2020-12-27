@@ -9,14 +9,15 @@ CallVars is configured to run with parameters listed in "config.yaml" file, whic
 ## Setting up a CallVars working directory:
 Pull this repo and make sure all the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
 
-	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq attached in repo)
-	- "CallVars.yml" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
-	- "Snakefile" (Attached in repo, this file is needed for running CallVars.)
-	- "config.yaml" (Attached in repo, this file lists samples and workflow parameter values. You may adjust these per your need.)
-	- "Target.bed" (Attached in repo, this file can be replaced by your target file of interest in BED format.)
-	- "gatkPythonPackageArchive.zip" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
+	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq)
+	- "CallVars.yml" (This file is needed while creating a conda environment for running CallVars.)
+	- "Snakefile" (This file is needed for running CallVars.)
+	- "config.yaml" (This file lists samples and workflow parameter values. You may adjust these per your need.)
+	- "Target.bed" (This file can be replaced by your target file of interest in BED format.)
+	- "gatkPythonPackageArchive.zip" (This file is needed while creating a conda environment for running CallVars.)
 
-**You will need to separately download below directory. A google account will be required.**
+**Get the below directory ready before running CallVars. A google account will be required for download.**
+	
 	- "dataSourcesFolder" containing below data sources. 
 			Genecode, Clinvar, Gnomad
 	  These data sources can be downloaded using below link.
@@ -100,7 +101,7 @@ CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis
 
 ### 1) Pre-processing using Cutadapt
 
-	rules/AdapterTrim.py (attached in repo)
+	rules/AdapterTrim.py
 
 Pre-processing prepares the data for NGS analysis. When DNA or RNA molecules are sequenced using Illumina short reads technology, the machine may sequence into the adapter ligated to the 3’ end of each molecule during library preparation. Consequently, the reads that are output contain the sequence of the molecule of interest and also the adapter sequence. Also, with Illumina sequencing machines, the quality of reads is high at the beginning but degrades towards the 3’ end of the reads. 
 	
