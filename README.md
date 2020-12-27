@@ -2,7 +2,7 @@
 
 **CallVars is an automated, reproducible and scalable Snakemake workflow that takes paired-end FastQ files directly to a filtered list of high confidence variants for clinical review. The workflow is based on [Broad Institute's Best Practices](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11145) guidelines for germline short variant discovery (SNPs + Indels) for single sample.** 
 
-CallVars can be helpful to anyone working with targeted gene panels or even whole exomes to detect disease causing/associated variants that can potentially help clinicians with a diagnosis/treatment. If you think CallVars can help with your study or run into issues, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes). CallVars is under development so any feedback for its improvement is much appreciated.
+CallVars can be helpful to anyone working with targeted gene panels or even whole exomes to detect disease causing/associated variants that can potentially help clinicians with a diagnosis/treatment. If CallVars can be of your help or if you run into issues while using it, feel free to DM me on twitter [(@IAnalyzeGenomes)](https://twitter.com/IAnalyzeGenomes). CallVars is under development so any feedback for its improvement is much appreciated.
 
 CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome. The description below is pertaining to hg19.
 
@@ -20,8 +20,7 @@ All the below listed files/folders must be present in the working directory befo
 	  These data sources can be downloaded using below link (a google account will be required).
 	  https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 
-## Installing and Running CallVars on Linux CLI:
-
+## Installing and running CallVars on linux Command Line Interface (CLI):
 
 #### 1)	Check the working directory and FastQ files: 
 
