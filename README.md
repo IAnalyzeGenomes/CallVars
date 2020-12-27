@@ -128,13 +128,13 @@ http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 	
 	rules/BamPrep.py (attached in repo)
 	
-#### 3A - Sorting using samtools**
+#### 3A - Sorting using samtools
 Now that we have a BAM file, we need to index it. All BAM files need an index, as they tend to be large and the index allows us to perform computationally complex operations on these files without it taking days to complete. Before we index the BAM file we need to sort them by position and remove duplicates. This step performs sorting the BAM file by position.
 	
-#### 3B - Removing duplicates using GATK MarkDuplicates**
+#### 3B - Removing duplicates using GATK MarkDuplicates
 CallVars uses this tool to locate and remove duplicate reads in a BAM file, where duplicate reads are defined as originating from a single fragment of DNA. Duplicates can arise during sample preparation e.g. library construction using PCR. The MarkDuplicates tool works by comparing sequences in the 5 prime positions of read-pairs in a BAM file.
 	
-#### 3C - Indexing using samtools**
+#### 3C - Indexing using samtools
 CallVars now performs indexing. 
 
 ### 4) 	Variant calling using samtools
