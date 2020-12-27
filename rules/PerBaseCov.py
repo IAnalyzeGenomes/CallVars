@@ -1,10 +1,11 @@
 # Rule to find per base coverage
 rule Bedtools_PerBaseCov:
     input:
-        BAM = "CallVars/BQSR/{sample}.bam"
+        BAM = "CallVars/NoDupReads/{sample}.bam",
+        index = "CallVars/NoDupReads/{sample}.bam.bai"
     output:
-        COV1 = "CallVars/BQSR/{sample}_PerBaseCov.txt",
-        COV2 = "CallVars/BQSR/{sample}_PerBaseCov_LessThan20.txt"
+        COV1 = "CallVars/NoDupReads/{sample}_PerBaseCov.txt",
+        COV2 = "CallVars/NoDupReads/{sample}_PerBaseCov_LessThan20.txt"
     log:
         "CallVars/Logs/{sample}_Bedtools_PerBaseCov.log"
     params:

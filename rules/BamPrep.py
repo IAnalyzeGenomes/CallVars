@@ -20,12 +20,11 @@ rule GATK_MarkDuplicates:
 		"CallVars/SortedReads/{sample}.bam"
 	output:
 		first="CallVars/NoDupReads/{sample}.bam",
-		second="/home/amit/Desktop/Shared/BWA-GATK/CallVars/NoDupReads/{sample}_marked_dup_metrics.txt"
+		second="CallVars/NoDupReads/{sample}_marked_dup_metrics.txt"
 	log:
 		"CallVars/Logs/{sample}_GATK-MarkDuplicates.log"
 	shell:
-		"gatk MarkDuplicates --REMOVE_DUPLICATES -I={input} -O={output.first} -M={output.second} --VALIDATION_STRINGENCY=SILENT 2>{log}"
-
+		"gatk MarkDuplicates --REMOVE_DUPLICATES --TMP_DIR= CallVars/NoDupReads/ -I={input} -O={output.first} -M={output.second} --VALIDATION_STRINGENCY=SILENT 2>{log}"       
 #Rule to index the BAM file using SAMTOOLS
 
 rule SAMTOOLS_Index:

@@ -1,7 +1,7 @@
 #Provide list of your samples 
 SAMPLE:
-# - A
- - NA12878
+ - A
+# - NA12878
 # - NA24385
 # - NA24149
 # - NA24143
@@ -30,13 +30,11 @@ SOR_Filter_config: 3.0
 #GATK JAVA memory
 GATK_JAVA_config: -Xmx8g -Xmx4g
 
-#parameters for rule GATK_HaplotypeCaller
-
 # Files for hg19 version of human reference genome
 Ref_config: hg19
 Reference: genome.fa
 dbSNP_Database: dbSNP_hg19.vcf
-TARGET_config: Target_hg19.bed
-DataSource_config: dataSourcesFolderHG19/
+TARGET_config: Target.bed
+DataSource_config: dataSourcesFolder/
 CutGermline_config: 332
 

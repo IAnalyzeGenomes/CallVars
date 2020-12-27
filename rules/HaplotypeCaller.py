@@ -2,7 +2,8 @@
 
 rule GATK_HaplotypeCaller:
     input:
-        BAM = "CallVars/NoDupReads/{sample}.bam"
+        BAM = "CallVars/NoDupReads/{sample}.bam",
+        index = "CallVars/NoDupReads/{sample}.bam.bai"
     output:
         "CallVars/VCF/{sample}_germline.vcf"
     log:
