@@ -24,76 +24,38 @@ All the below listed files/folders must be present in the working directory befo
 	- "config.yaml" (Attached in repo, this file lists samples and workflow parameter values. You may adjust these per your need.)
 	- "Target.bed" (Attached in repo, this file can be replaced by your target file of interest in BED format.)
 	- "gatkPythonPackageArchive.zip" (Attached in repo, this file is needed while creating a conda environment for running CallVars.)
-	
-You will need to download each of the below listed files from their respective public repositories. I have provided links to these resources (I would ideally like to have a bash script that will take care of all the below steps - hopefully soon!).
+	- "dataSourcesFolderHG19" containing below data sources. 
+			Genecode, Clinvar, Gnomad
+	  These data sources can be downloaded using below link (a google account will be required).
+	  https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 
-	- "1000G_phase1.indels.hg19.sites.vcf"
-	- "1000G_phase1.indels.hg19.sites.vcf.idx"
-	- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
-	- "Mills_and_1000G_gold_standard.indels.hg19.sites.vcf.idx"
-	These 1000 genome indel files can be downloaded using below link.
-	ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg19/
-	
-	- "dbSNP_20180423.vcf"
-	- "dbSNP_20180423.vcf.idx"
-	These dbSNP files can be downloaded usibg below link.
-	ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/
-	
-	- "GNOMAD_hg19.vcf"
-	- "GNOMAD_hg19.vcf.idx"
-	These gnomAD files can be downloaded using below link.
-	http://hgdownload.cse.ucsc.edu/gbdb/hg19/gnomAD/vcf/
-	
-	- HG19 Reference Genome Folder ‘UCSCWholeGenomeFasta’ containing files
-  	"genome.dict"
-	"genome.fa"
-	"genome.fa.amb" 
-	"genome.fa.ann"
-	"genome.fa.bwt"
-	"genome.fa.fai"
-	"genome.fa.pac"
-	"genome.fa.sa"
-	"GenomeSize.xml"
-	The reference genome files can be downloaded in 2bit format using below link.
-	http://hgdownload.cse.ucsc.edu/gbdb/hg19/
-	The utility program, twoBitToFa (available from the kent src tree), can be used to extract .fa file(s) from this file.  
-	A pre-compiled version of the command line tool can be found at: http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/
-	Converting 2bit to fa --> ./twoBitToFa hg19.2bit hg19.fa
-	renaming --> mv hg19.fa genome.fa
-	indexing .fa file --> bwa index genome.fa
-	Creating .dict file --> gatk CreateSequenceDictionary –R genome.fa
-
-	
-	- dataSourcesFolder containing below data source. 
-	Genecode, Clinvar, Gnomad
-	Data source was downloaded using below link.
-	https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
-
-## <ins>Installing and Running CallVars on Linux CLI:</ins> 
-#### 1)	Check the working directory and FastQ files: 
+## <ins>Installing and Running CallVars:</ins> 
+#### 1) Running the download script, Download.sh (attached in this repo), as below on Linux command line interface (CLI)
+		sh Download.sh
+#### 2)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
 Make sure your fastq files are in a ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. The pipeline also works with gzipped fastq files, say A_R1.fastq.gz and A_R2.fastq.gz.
 
-#### 2)	Install miniconda: 
+#### 3)	Install miniconda: 
 
 Use below link to install miniconda.
 
 https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
-#### 3)	Install snakemake using conda:
+#### 4)	Install snakemake using conda:
 	
 		conda install -c bioconda -c conda-forge snakemake
 
-#### 4)	Create environment CallVars using conda:
+#### 5)	Create environment CallVars using conda:
 	
 		conda env create –n CallVars –f CallVars.yml
 
-#### 5)	Activate CallVars environment using conda:
+#### 6)	Activate CallVars environment using conda:
 
 		conda activate CallVars
 
-#### 6)	Running CallVars: 
+#### 7)	Running CallVars: 
 Ensure you run the below command's in the working directory.
 
 Use below command on CLI for a dry run:
@@ -111,17 +73,16 @@ Use below command on CLI if your machine supports multiple CPU cores:
 
 After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples, then you will see these files for all your samples.
 
-	1] CallVars/Reports/A_Germline.txt contains a filtered list of germline variants from GATK HaplotypeCALLER.
-	2] CallVars/Reports/A_Somatic.txt contains a filtered list of somatic variants from GATK Mutect2.
-	3] CallVars/Reports/A_Germline_All.vcf contains a complete list of germline variants from GATK HaplotypeCALLER.
-	4] CallVars/Reports/A_Somatic_All.vcf contains a complete list of somatic variants from GATK Mutect2.
-	5] CallVars/BQSR/A_PerBaseCov.txt contains coverage for each base.
-	6] CallVars/BQSR/A_PerBaseCov_LessThan20.txt contains bases for which coverage is less than 20.
-	7] CallVars/Reports/A_samtools.vcf contains a full list variants from samtools mpileup.
+	1] CallVars/Reports/A_Germline.txt contains a filtered list of germline variants from GATK HaplotypeCaller.
+	2] CallVars/Reports/A_Germline_All.vcf contains a complete list of germline variants from GATK HaplotypeCaller.
+	3] CallVars/Reports/A_samtools.vcf contains a full list variants from samtools mpileup.
+	4] CallVars/NoDupReads/A_PerBaseCov.txt contains coverage for each base.
+	5] CallVars/NoDupReads/A_PerBaseCov_LessThan20.txt contains bases for which coverage is less than 20.
+	
 
 # <ins>CallVars Workflow:</ins>
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
-![](CallVarsWorkflowEngine.PNG)
+![](CallVarsWorkflowEngine.PN)
 
 
 ### 1) Pre-processing using Cutadapt
@@ -152,22 +113,11 @@ CallVars uses this tool to locate and remove duplicate reads in a BAM file, wher
 	
 CallVars now perform indexing discussed in step 3 using samtools. 
 	
-### 6) Base quality score recalibration using GATK BaseRecalibrator and ApplyBQSR
-	
-CallVars uses GATK BaseRecalibrator and ApplyBQSR to perform Base Quality Score Recalibration (BQSR). Every base sequenced by machine is assigned a base quality score. These scores play an important role in variant detection. Unfortunately, the scores produced by the machines are subject to various sources of systematic (non-random) technical error. Some of these errors are due to the physics or the chemistry of how the sequencing reaction works, and some are probably due to manufacturing flaws in the equipment.
+### 6) Germline variant detection using GATK HaplotypeCaller
 
-BQSR uses a machine learning approach to model and correct systematic base scoring errors in particular regions of the genome such as homopolymer runs. It works in a two-pass manner, first building a model over all bases in the dataset as well as a set of known variants and writing the model to a recalibration table, as performed by GATK BaseRecalibrator. The second pass actually applies the learned model to correct per-base alignment quality scores to output a recalibrated BAM, as performed by GATK AppyBQSR. 
-	
+CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper. 
 
-### 7) Germline variant detection using GATK HaplotypeCaller
-
-CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper.
-
-### 8) Somatic variant detection using GATK Mutect2
-	
-CallVars uses GATK Mutect2 to call somatic short mutations via local assembly of haplotypes. Short mutations include single nucleotide (SNPs) and insertion and deletion (indels) alterations. The caller uses a Bayesian somatic genotyping model and uses the assembly-based machinery of HaplotypeCaller. 
-
-### 9) Functional annotation for germline variants using GATK Funcotator
+### 7) Functional annotation for germline variants using GATK Funcotator
 	
 CallVars uses GATK Funcotator (FUNCtional annOTATOR) to analyze given variants for their function (as retrieved from a set of data sources) and produces the analysis in a specified output file. This tool is a functional annotation tool that allows a user to add annotations to called variants based on a set of data sources, each with its own matching criteria.
 	
@@ -175,18 +125,11 @@ Data from Genecode, Clinvar and Gnomad were used for annotation of variants. Dat
 	
 https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 	
-### 10) Functional annotation for somatic variants using GATK Funcotator
-	
-This step performs functional annotation as discussed in step 9 for somatic variants.
 
-### 11) Variant filtration for germline variants using GATK VariantFiltration
+### 8) Variant filtration for germline variants using GATK VariantFiltration
 	
 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
 CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 1% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
-	
-### 12) Variant filtration for somatic variants using GATK VariantFiltration 
-	
-This step performs filtering as discussed in step 11 for Somatic variants.
 
 # <ins>Author:</ins>
 [Amit Rupani](https://twitter.com/IAnalyzeGenomes) 
