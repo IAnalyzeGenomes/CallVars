@@ -82,7 +82,7 @@ CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Ind
 
 # <ins>CallVars Workflow:</ins>
 CallVars sequentially performs below steps of Next-Gen Sequencing (NGS) analysis.
-![](CallVarsWorkflowEngine.PN)
+![](CallVarsWorkflowEngine.PNG)
 
 
 ### 1) Pre-processing using Cutadapt
