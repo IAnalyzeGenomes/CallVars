@@ -22,13 +22,28 @@ All the below listed files/folders must be present in the working directory befo
 
 ## Installing and Running CallVars on Linux CLI:
 
-#### 1) Running the download script Download.sh (attached in this repo)
-		sh Download.sh
 
-#### 2)	Check the working directory and FastQ files: 
+#### 1)	Check the working directory and FastQ files: 
 
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
 Make sure your fastq files are in a ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. The pipeline also works with gzipped fastq files, say A_R1.fastq.gz and A_R2.fastq.gz.
+
+#### 2) Running the download script Download.sh (attached in this repo)
+		sh Download.sh
+
+The above bash script can take a few hours to run as it will download below files needed for CallVars workflow to run successfully.
+		
+		- dbSNP_hg19.vcf
+		- dbSNP_hg19.vcf.idx
+		- genome.dict
+		- genome.fa
+		- genome.fa.amb
+		- genome.fa.ann
+		- genome.fa.bwt
+		- genome.fa.fai
+		- genome.fa.pac
+		- genome.fa.sa
+		- GenomeSize.xml
 
 #### 3)	Install miniconda: 
 
