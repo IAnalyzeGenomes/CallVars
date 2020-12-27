@@ -141,14 +141,25 @@ CallVars uses this tool to locate and remove duplicate reads in a BAM file, wher
 	rules/BamPrep.py (attached in repo)
 
 CallVars now perform indexing discussed in step 3 using samtools. 
-	
-### 6) Germline variant detection using GATK HaplotypeCaller
+
+### 6) 	Variant calling using samtools
+	rules/SamtoolsVC.py
+CallVars reports a list of variants from samtools mpileup and bcftools. Samtools collects summary information in the input BAMs, computes the likelihood of data given each possible genotype and stores the likelihoods in the BCF format (see below). It does not call variants.Bcftools applies the prior and does the actual calling. It can also concatenate BCF files, index BCFs for fast random access and convert BCF to VCF. 
+
+### 7) 	Coverage analysis using bedtools
+
+	rules/PerBaseCov.py (attached in repo)
+
+CallVars uses bedtools coverage utility to report per base coverage for the targeted file you provided in BED format. 
+It also reports bases with coverage less than 20 to review regions of low coverage.
+
+### 8) Germline variant detection using GATK HaplotypeCaller
 
 	rules/HaplotypeCaller.py (attached in repo)
 
 CallVars uses GATK HaplotypeCaller to call germline SNPs and indels via local de-novo assembly of haplotypes in an active region. In other words, whenever the program encounters a region showing signs of variation, it discards the existing mapping information and completely reassembles the reads in that region. This allows the HaplotypeCaller to be more accurate when calling regions that are traditionally difficult to call, for example when they contain different types of variants close to each other. It also makes the HaplotypeCaller much better at calling indels than position-based callers like UnifiedGenotyper. 
 
-### 7) Functional annotation for germline variants using GATK Funcotator
+### 9) Functional annotation using GATK Funcotator
 
 	rules/Funcotator.py (attached in repo)
 
@@ -159,16 +170,12 @@ Data from Genecode, Clinvar and Gnomad were used for annotation of variants. Dat
 https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 	
 
-### 8) Variant filtration for germline variants using GATK VariantFiltration
+### 10) Variant filtration using GATK VariantFiltration
 
 	rules/VariantFiltration.py (attached in repo)
 
 [GATK guidelines](https://software.broadinstitute.org/gatk/documentation/article.php?id=6925) were used to apply generic hard-filtering to add PASS/FAIL tags to variants. Note that CallVars doesn't filter the variants based on PASS/FAIL tags. 
 CallVars currently uses gnomAD allele frequency as a key filter to report variants having either genomes or exomes allele frequency less than 1% for clinical review. This value can be customized using the config.yaml file attached in this repository. 
 
-### 9) Variant filtration for germline variants using GATK VariantFiltration
 
-	rules/PerBaseCov.py (attached in repo)
-
-CallVars uses bedtools coverage utility to report per base coverage for the targeted file you provided in BED format. It also reports bases with coverage less than 20 to review regions of low coverage.
 
