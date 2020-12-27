@@ -80,15 +80,15 @@ Use below command on CLI if your machine supports multiple CPU cores:
 
 **After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples, then you will see these files for all your samples.**
 
-**1] CallVars/Reports/A_Germline.txt contains a filtered list of germline variants from GATK HaplotypeCaller.**
+**1] CallVars/Reports/A_Germline.txt** contains a filtered list of germline variants from GATK HaplotypeCaller.
 
-**2] CallVars/Reports/A_Germline_All.vcf contains a complete list of germline variants from GATK HaplotypeCaller.**
+**2] CallVars/Reports/A_Germline_All.vcf** contains a complete list of germline variants from GATK HaplotypeCaller.
 
-**3] CallVars/Reports/A_samtools.vcf contains a full list variants from samtools mpileup.**
+**3] CallVars/Reports/A_samtools.vcf** contains a full list variants from samtools mpileup.
 
-**4] CallVars/NoDupReads/A_PerBaseCov.txt contains coverage for each base.**
+**4] CallVars/NoDupReads/A_PerBaseCov.txt** contains coverage for each base.
 
-**5] CallVars/NoDupReads/A_PerBaseCov_LessThan20.txt contains bases for which coverage is less than 20.**
+**5] CallVars/NoDupReads/A_PerBaseCov_LessThan20.txt** contains bases for which coverage is less than 20.
 	
 ## Benchmarking:
 CallVars reported a 100% sensitivity for SNPs and 98.5% sensitivity for SNPs+Indels in four Genome In A Bottle (GIAB) samples [NA12878, NA24385, NA24143 and NA24149] combined, for a targeted panel of 64 cancer specific genes as listed below. VCFEVAL utility from Real Time Genomics was used to evaluate the sensitivity.
@@ -128,13 +128,13 @@ http://hgdownload.cse.ucsc.edu/gbdb/hg19/
 	
 	rules/BamPrep.py (attached in repo)
 	
-#### 3A - Sorting using samtools
+#### 	3A - Sorting using samtools
 Now that we have a BAM file, we need to index it. All BAM files need an index, as they tend to be large and the index allows us to perform computationally complex operations on these files without it taking days to complete. Before we index the BAM file we need to sort them by position and remove duplicates. This step performs sorting the BAM file by position.
 	
-#### 3B - Removing duplicates using GATK MarkDuplicates
+#### 	3B - Removing duplicates using GATK MarkDuplicates
 CallVars uses this tool to locate and remove duplicate reads in a BAM file, where duplicate reads are defined as originating from a single fragment of DNA. Duplicates can arise during sample preparation e.g. library construction using PCR. The MarkDuplicates tool works by comparing sequences in the 5 prime positions of read-pairs in a BAM file.
 	
-#### 3C - Indexing using samtools
+#### 	3C - Indexing using samtools
 CallVars now performs indexing. 
 
 ### 4) 	Variant calling using samtools
