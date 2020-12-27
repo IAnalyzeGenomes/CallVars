@@ -27,8 +27,8 @@ All the below listed files/folders must be present in the working directory befo
 In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
 Make sure your fastq files are in a ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. The pipeline also works with gzipped fastq files, say A_R1.fastq.gz and A_R2.fastq.gz.
 
-#### 2) Running the download script Download.sh (attached in this repo)
-		$sh Download.sh
+#### 2) Running the download script, Download.sh (attached in this repo)
+		sh Download.sh
 
 The above bash script can take a few hours to run as it will download below files needed for CallVars workflow to run successfully.
 		
@@ -52,31 +52,31 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 #### 4)	Install snakemake using conda:
 	
-		$conda install -c bioconda -c conda-forge snakemake
+		conda install -c bioconda -c conda-forge snakemake
 
 #### 5)	Create environment CallVars using conda:
 	
-		$conda env create –n CallVars –f CallVars.yml
+		conda env create –n CallVars –f CallVars.yml
 
 #### 6)	Activate CallVars environment using conda:
 
-		$conda activate CallVars
+		conda activate CallVars
 
 #### 7)	Running CallVars: 
 Ensure you run the below command's in the working directory.
 
 Use below command on CLI for a dry run:
 		
-		$snakemake -np
+		snakemake -np
 
 		
 Use below command on CLI to execute the workflow:
 		
-		$snakemake
+		snakemake
 		
 Use below command on CLI if your machine supports multiple CPU cores:
 		
-		$snakemake --cores N
+		snakemake --cores N
 
 **After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples, then you will see these files for all your samples.**
 
