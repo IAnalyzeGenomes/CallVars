@@ -14,6 +14,7 @@ if [ $RESULT1 -eq 0 ]; then
 else
   echo samtools_faidx_failed
 fi
+
 bwa index genome.fa
 RESULT2=$?
 if [ $RESULT2 -eq 0 ]; then
@@ -21,6 +22,7 @@ if [ $RESULT2 -eq 0 ]; then
 else
   echo bwa_index_failed
 fi
+
 gatk CreateSequenceDictionary -R genome.fa
 RESULT3=$?
 if [ $RESULT3 -eq 0 ]; then
@@ -38,7 +40,9 @@ if [ $RESULT4 -eq 0 ]; then
 else
   echo dbSNP_Download_failed
 fi
+
 rm All_20180423.vcf.gz
+
 gatk IndexFeatureFile -F dbSNP_hg19.vcf
 RESULT5=$?
 if [ $RESULT5 -eq 0 ]; then
