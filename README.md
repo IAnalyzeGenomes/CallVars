@@ -6,8 +6,13 @@ CallVars can be helpful to anyone working with targeted gene panels or even whol
 
 CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome. The description below is pertaining to hg19.
 
-## Setting up a CallVars working directory:
-Pull this repo and make sure all the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
+## Installing and running CallVars on linux Command Line Interface (CLI):
+
+#### 1) Setting up a CallVars working directory:
+		
+		git pull https://github.com/IAnalyzeGenomes/CallVars
+
+Pull this repo using above command and make sure all the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
 
 	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq)
 	- "CallVars.yml" (This file is needed while creating a conda environment for running CallVars.)
@@ -16,19 +21,13 @@ Pull this repo and make sure all the below listed files/folders must be present 
 	- "Target.bed" (This file can be replaced by your target file of interest in BED format.)
 	- "gatkPythonPackageArchive.zip" (This file is needed while creating a conda environment for running CallVars.)
 
-**Get the below directory ready before running CallVars. A google account will be required for download.**
+**Get the "dataSourcesFolder" directory ready. A google account will be required for download.**
 	
 	- "dataSourcesFolder" containing below data sources. 
 			Genecode, Clinvar, Gnomad
 	  These data sources can be downloaded using below link.
 	  https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 
-## Installing and running CallVars on linux Command Line Interface (CLI):
-
-#### 1)	Check the working directory and FastQ files: 
-
-In the linux terminal, change the directory to the working directory that contains all the needed files and folders for running snakemake.
-Make sure your fastq files are in a ‘FastQ’ directory and they end in ‘_R1.fastq’ and ‘_R2.fastq’, say A_R1.fastq and A_R2.fastq. The pipeline also works with gzipped fastq files, say A_R1.fastq.gz and A_R2.fastq.gz.
 #### 2) Install miniconda:
 
 Use below link to install miniconda.
