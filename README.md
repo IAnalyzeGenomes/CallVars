@@ -68,13 +68,14 @@ Use below command on CLI for a dry run:
 		snakemake -np
 
 		
-Use below command on CLI to execute the workflow:
+Use below command on CLI to execute the workflow on single core machine:
 		
-		snakemake
+		snakemake --stats statFile.json
 		
 Use below command on CLI if your machine supports multiple CPU cores:
 		
-		snakemake --cores N
+		snakemake --cores N --stats statFile.json
+Where - N is number of cores.
 
 **After the worklow has run successfully, below listed files will be available for clinical review. If you are running more samples, then you will see these files for all your samples.**
 
