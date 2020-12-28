@@ -35,10 +35,19 @@ Use below link to install miniconda.
 
 https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
-#### 3) Running the download script, Download.sh (attached in this repo)
+
+#### 3)	Create environment CallVars using conda:
+	
+		conda env create –n CallVars –f CallVars.yml
+
+#### 4)	Activate CallVars environment using conda:
+
+		conda activate CallVars
+
+#### 5) Running the download script, Download.sh (attached in this repo)
 		sh Download.sh
 
-The above bash script can take a few hours to run as it will download below files needed for CallVars workflow to run successfully.
+The above bash script can take 1.5-2 hours to run as it will download below files needed for CallVars workflow to run successfully.
 		
 		- dbSNP_hg19.vcf
 		- dbSNP_hg19.vcf.idx
@@ -50,15 +59,6 @@ The above bash script can take a few hours to run as it will download below file
 		- genome.fa.fai
 		- genome.fa.pac
 		- genome.fa.sa
-		- GenomeSize.xml
-
-#### 4)	Create environment CallVars using conda:
-	
-		conda env create –n CallVars –f CallVars.yml
-
-#### 5)	Activate CallVars environment using conda:
-
-		conda activate CallVars
 
 #### 6)	Running CallVars: 
 Ensure you run the below command's in the working directory.
