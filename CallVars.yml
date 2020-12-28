@@ -22,6 +22,7 @@ dependencies:
 - bioconda::snakemake-minimal =5.4.5
 - bioconda/label/broken::bcftools =1.9
 - cutadapt=2.6
+- parallel
 - pip:
   - certifi==2020.11.8
   - readline==6.2.4.1
