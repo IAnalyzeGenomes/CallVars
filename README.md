@@ -12,7 +12,7 @@ CallVars is configured to run with parameters listed in "config.yaml" file, whic
 		
 		git pull https://github.com/IAnalyzeGenomes/CallVars
 
-Pull this repo using above command and make sure all the below listed files/folders must be present in the working directory before you run CallVars. Make sure the names of files/folders match exctly as listed.  
+Pull this repo using above command and make sure all the below listed files/folders must be present in the working directory before you run CallVars.
 
 	- "FastQ" folder containing paired-end reads ending in _R1.fastq and _R2.fastq (test files A_R1.fastq and A_R2.fastq)
 	- "CallVars.yml" (This file is needed while creating a conda environment for running CallVars.)
@@ -21,7 +21,7 @@ Pull this repo using above command and make sure all the below listed files/fold
 	- "Target.bed" (This file can be replaced by your target file of interest in BED format.)
 	- "gatkPythonPackageArchive.zip" (This file is needed while creating a conda environment for running CallVars.)
 
-**Get the "dataSourcesFolder" directory ready. A google account will be required for download.**
+**Please get the "dataSourcesFolder" directory ready. A google account will be required for download.**
 	
 	- "dataSourcesFolder" containing below data sources. 
 			Genecode, Clinvar, Gnomad
@@ -35,7 +35,7 @@ Use below link to install miniconda.
 https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 
-#### 3)	Create environment CallVars using conda:
+#### 3)	Setting up CallVars environment using conda:
 	
 		conda env create –n CallVars –f CallVars.yml
 
