@@ -20,7 +20,8 @@ Pull this repo using above command and make sure all the below listed files/fold
 	- "config.yaml" (This file lists samples and workflow parameter values. You may adjust these per your need.)
 	- "Target.bed" (This file can be replaced by your target file of interest in BED format.)
 	- "gatkPythonPackageArchive.zip" (This file is needed while creating a conda environment for running CallVars.)
-
+	- "Download.sh" (Script to download human reference files and dbSNP database)
+	
 **Please get the "dataSourcesFolder" directory ready. A google account will be required for download.**
 	
 	- "dataSourcesFolder" containing below data sources. 
@@ -43,10 +44,10 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 		conda activate CallVars
 
-#### 5) Running the download script, Download.sh (attached in this repo)
+#### 5) Running the download script, Download.sh
 		sh Download.sh
 
-The above bash script can take 1.5-2 hours to run as it will download below files needed for CallVars workflow to run successfully.
+The above bash script can take between 1.5-2 hours to run as it will download below files needed for CallVars workflow to run successfully.
 		
 		- dbSNP_hg19.vcf
 		- dbSNP_hg19.vcf.idx
