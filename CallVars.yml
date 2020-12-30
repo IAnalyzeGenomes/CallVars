@@ -24,6 +24,7 @@ dependencies:
 - cutadapt=2.6
 - parallel
 - bedtools
+- gatk4
 - pip:
   - certifi==2020.11.8
   - readline==6.2.4.1
