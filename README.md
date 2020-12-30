@@ -47,7 +47,7 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 #### 5) Running the download script, Download.sh
 		sh Download.sh
 
-The above bash script can take between 1.5-2 hours to run as it will download below files needed for CallVars workflow to run successfully.
+The above bash script can take between up to 6 hours to run as it will download below files needed for CallVars.
 		
 		- dbSNP_hg19.vcf
 		- dbSNP_hg19.vcf.idx
