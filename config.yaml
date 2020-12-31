@@ -35,6 +35,6 @@ Ref_config: hg19
 Reference: genome.fa
 dbSNP_Database: dbSNP_hg19_sorted.vcf
 TARGET_config: Target.bed
-DataSource_config: dataSourcesFolder/
+DataSource_config: dataSources/
 CutGermline_config: 332
 
