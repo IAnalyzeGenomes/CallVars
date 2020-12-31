@@ -7,11 +7,11 @@ rule BWA_Mapping:
 	output:
 		"CallVars/MappedReads/{sample}.bam"
 	params:
-		rg=r"@RG\tID:{sample}\tLB:TS1E\tPL:Illumina\tPU=NextSeq550\tSM:{sample}",
+		rg=r"-R '@RG\tID:{sample}\tSM:{sample}'",
 		bwa_threads=expand("{bwa_threads}", bwa_threads=config["bwa_threads_config"]),
 		samtools_threads=expand("{samtools_threads}", samtools_threads=config["samtools_threads_config"]),
 		REF=expand("{REF}", REF=config["Reference"])
 	log:
 		"CallVars/Logs/{sample}_BWA-Mapping.log"
 	shell:
-		"bwa mem -R '{params.rg}' -t {params.bwa_threads}  {params.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} -@ {params.samtools_threads} 2>{log}"
+		"bwa mem '{params.rg}' -t {params.bwa_threads}  {params.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -Sb - > {output} -@ {params.samtools_threads} 2>{log}"
