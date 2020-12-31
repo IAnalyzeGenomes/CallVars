@@ -33,7 +33,7 @@ GATK_JAVA_config: -Xmx8g -Xmx4g
 # Files for hg19 version of human reference genome
 Ref_config: hg19
 Reference: genome.fa
-dbSNP_Database: dbSNP_hg19.vcf
+dbSNP_Database: dbSNP_hg19_sorted.vcf
 TARGET_config: Target.bed
 DataSource_config: dataSourcesFolder/
 CutGermline_config: 332
