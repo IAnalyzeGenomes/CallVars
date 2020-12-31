@@ -24,7 +24,7 @@ rule GATK_MarkDuplicates:
 	log:
 		"CallVars/Logs/{sample}_GATK-MarkDuplicates.log"
 	shell:
-		gatk MarkDuplicates --REMOVE_DUPLICATES true  -I {input} -O {output.first} -M {output.second}  2>{log}
+		"gatk MarkDuplicates --REMOVE_DUPLICATES true  -I {input} -O {output.first} -M {output.second}  2>{log}"
      
 #Rule to index the BAM file using SAMTOOLS
 
