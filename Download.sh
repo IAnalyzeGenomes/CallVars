@@ -17,3 +17,4 @@ wget -nc ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/All_
 zcat All_20180423.vcf.gz | parallel --pipe sed '/^#/!s/^/chr/' > dbSNP_hg19.vcf
 rm All_20180423.vcf.gz
 gatk --java-options -Xmx4g SortVcf -I dbSNP_hg19.vcf -O dbSNP_hg19_sorted.vcf  -SD genome.dict
+rm dbSNP_hg19.vcf
