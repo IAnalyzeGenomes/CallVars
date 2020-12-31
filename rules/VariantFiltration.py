@@ -1,4 +1,4 @@
-# Rule to add PASS/FAIL tags to germline variants using GATK VariantFiltration and then filter variants with gnomAD genomes or exomes allele freq less than 0.5%
+# Rule to add PASS/FAIL tags to germline variants using GATK VariantFiltration and then filter variants with gnomAD genomes or exomes allele freq less than 1%
 
 rule GATK_VariantFiltration_Germline:
     input:
