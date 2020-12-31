@@ -21,13 +21,6 @@ Pull this repo using above command and make sure all the below listed files/fold
 	- "Target.bed" (This file can be replaced by your target file of interest in BED format.)
 	- "gatkPythonPackageArchive.zip" (This file is needed while creating a conda environment for running CallVars.)
 	- "Download.sh" (Script to download human reference files and dbSNP database)
-	
-**Please get the "dataSourcesFolder" directory ready. A google account will be required for download.**
-	
-	- "dataSourcesFolder" containing below data sources. 
-			Genecode, Clinvar, Gnomad
-	  These data sources can be downloaded using below link.
-	  https://console.cloud.google.com/storage/browser/broad-public-datasets/funcotator --> funcotator_dataSources.v1.6.20190124g.tar.gz
 
 #### 2) Install miniconda:
 
