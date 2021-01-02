@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-set -e
+set -euo
 # Downloading human reference genome files 
 wget -nc  http://hgdownload.cse.ucsc.edu/gbdb/hg19/hg19.2bit
 wget -nc  http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/twoBitToFa 
