@@ -57,7 +57,7 @@ The above bash script can take up to 6 hours to run as it will download below fi
 		- dbSNP_hg19.vcf
 		- dbSNP_hg19.vcf.idx
 
-	The bash script also gets the "FuncotatorDataSources/" folder ready which contains below sub-folders for variant annotations by CallVars
+	"FuncotatorDataSources/" folder ready which contains below sub-folders for variant annotations by CallVars
 		- clinvar/
 		- gencode/ 
 		- gnomAD_exomes/
