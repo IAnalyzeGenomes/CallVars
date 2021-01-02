@@ -40,10 +40,10 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 #### 5) Running the download script, Download.sh
 		sh Download.sh
 
-The above bash script can take between up to 6 hours to run as it will download below files needed for CallVars.
-		
-		- dbSNP_hg19.vcf
-		- dbSNP_hg19.vcf.idx
+The above bash script can take up to 6 hours to run as it will download below files/folders needed for CallVars.
+
+	Human genome reference files.
+
 		- genome.dict
 		- genome.fa
 		- genome.fa.amb
@@ -52,6 +52,16 @@ The above bash script can take between up to 6 hours to run as it will download 
 		- genome.fa.fai
 		- genome.fa.pac
 		- genome.fa.sa
+
+	dbSNP files
+		- dbSNP_hg19.vcf
+		- dbSNP_hg19.vcf.idx
+
+	The bash script also gets the "FuncotatorDataSources/" folder ready which contains below sub-folders for variant annotations by CallVars
+		- clinvar/
+		- gencode/ 
+		- gnomAD_exomes/
+		- gnomad_genomes/
 
 #### 6)	Running CallVars: 
 Ensure you run the below command's in the working directory.
