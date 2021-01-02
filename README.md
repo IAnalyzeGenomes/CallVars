@@ -6,7 +6,7 @@ CallVars can be helpful to anyone working with targeted gene panels or even whol
 
 CallVars is configured to run with parameters listed in "config.yaml" file, which is attached in this repository. You may change parameter values in config file to customize the workflow to your needs. You can list your samples (within "SAMPLE" section) in config file to scale the workflow. You can also choose to run the workflow either with hg19 or hg38 version of human reference genome. The description below is pertaining to hg19.
 
-## Installing and running CallVars on linux Command Line Interface (CLI):
+## Installing and running CallVars on Linux Command Line Interface (CLI):
 
 #### 1) Setting up a CallVars working directory:
 		
