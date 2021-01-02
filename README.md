@@ -42,7 +42,7 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 
 **The above bash script can take up to 6 hours to run as it will download below files/folders needed for CallVars. Make sure there is ~300gb disk space available before you run this script.**
 
-	Human genome reference files.
+	Human genome reference files (hg19 for now)
 
 		- genome.dict
 		- genome.fa
