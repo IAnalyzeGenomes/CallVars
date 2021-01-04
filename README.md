@@ -40,10 +40,9 @@ https://conda.io/projects/conda/en/latest/user-guide/install/linux.html
 #### 5) Running the download script, Download.sh
 		sh Download.sh
 
-**The above bash script can take up to 6 hours to run as it will download below files/folders needed for CallVars. Make sure there is ~300gb disk space available before you run this script.**
+**The above bash script can take up to 6 hours to run as it will download below files/folders needed for CallVars. Make sure ~150gb disk space is available before you run this script.**
 
 	Human genome reference files (hg19 for now)
-
 		- genome.dict
 		- genome.fa
 		- genome.fa.amb
