@@ -28,5 +28,5 @@ tar -xvf funcotator_dataSources.v1.7.20200521g/gnomAD_exome.tar
 gunzip funcotator_dataSources.v1.7.20200521g/gnomAD_genome.tar.gz
 tar -xvf funcotator_dataSources.v1.7.20200521g/gnomAD_genome.tar
 mkdir FuncotatorDataSources
-mv funcotator_dataSources.v1.7.20200521g/gencode/ funcotator_dataSources.v1.7.20200521g/gnomAD_genome/ funcotator_dataSources.v1.7.20200521g/gnomAD_exome/ funcotator_dataSources.v1.7.20200521g/clinvar/ FuncotatorDataSourcesDataSources/
+mv gnomAD_genome/ gnomAD_exome/ funcotator_dataSources.v1.7.20200521g/gencode/ funcotator_dataSources.v1.7.20200521g/clinvar/ FuncotatorDataSourcesDataSources/
 
