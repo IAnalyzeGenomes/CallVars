@@ -5,7 +5,8 @@ rule GATK_HaplotypeCaller:
         BAM = "CallVars/NoDupReads/{sample}.bam",
         index = "CallVars/NoDupReads/{sample}.bam.bai"
     output:
-        "CallVars/VCF/{sample}_germline.vcf"
+        VCF= "CallVars/VCF/{sample}_germline.vcf",
+        GATK_BAM = "CallVars/NoDupReads/{sample}_GATK.bam"
     log:
         "CallVars/Logs/{sample}_GATK-HaplotypeCaller.log"
     params:
@@ -14,4 +15,4 @@ rule GATK_HaplotypeCaller:
         dbSNP = expand("{dbSNP}", dbSNP=config["dbSNP_Database"]),
         TARGET = expand("{TARGET}", TARGET=config["TARGET_config"])
     shell:
-        "gatk --java-options '{params.mem}' HaplotypeCaller -R {params.REF} -I {input.BAM} --dbsnp {params.dbSNP} -L {params.TARGET} -O {output} &>{log}"
+        "gatk --java-options '{params.mem}' HaplotypeCaller -R {params.REF} -I {input.BAM} --dbsnp {params.dbSNP} -L {params.TARGET} -O {output.VCF} --bamout {output.GATK_BAM} &>{log}"
