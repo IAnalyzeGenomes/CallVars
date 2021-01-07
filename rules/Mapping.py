@@ -14,4 +14,4 @@ rule BWA_Mapping:
 	log:
 		"CallVars/Logs/{sample}_BWA-Mapping.log"
 	shell:
-		"bwa mem {params.rg} -t {params.bwa_threads}  {params.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -S -b > {output} -@ {params.samtools_threads} 2>{log}"
+		"bwa mem {params.rg} -t {params.bwa_threads}  {params.REF} {input.FWD_TRIM} {input.REV_TRIM} | samtools view -S -b -@ {params.samtools_threads} > {output}  2>{log}"
